@@ -1,0 +1,96 @@
+# jemdoc: menu{MENU}{index.html} 
+= Haoxue Fan
+
+~~~
+{}{img_left}{img/avatar.jpg}{}{240}{240}
+Senior Student Majoring in Computer Science\n
+[http://eecs.pku.edu.cn School of Electronics Engineering and Computer Science]\n
+[http://www.pku.edu.cn/ Peking University]\n\n
+[pdf/Tianwei_Ni_CV.pdf Curriculum Vitae] | [https://github.com/twni2016 Github]\n
+Email: twni2016 AT gmail DOT com\n\n
+
+*NOTE: Tianwei Ni is a bad teacher. Do not enroll in his class!!!*
+~~~
+
+~~~
+/Experience without theory is blind, but theory without experience is mere intellectual play./ --- I. Kant
+~~~
+
+== About me
+
+I'm Tianwei Ni (倪天炜, Victor), a senior student in the [http://eecs.pku.edu.cn School of EECS] at [http://www.pku.edu.cn PKU].
+
+I'm now a research intern at [http://www.cs.jhu.edu/~ayuille/ Bloomberg Distinguished Prof. Alan L. Yuille]'s [http://ccvl.jhu.edu/ CCVL lab] at [https://www.jhu.edu/ the Johns Hopkins University]. My research project is medical image analysis using geometric deep learning.
+
+I'm also a research assistant focusing on computer vision advised by [http://www.cis.pku.edu.cn/faculty/vision/zlin/zlin.htm Prof. Zhouchen Lin] in [http://www.klmp.pku.edu.cn/ Key Laboratory of Machine Perception] at PKU since 2017.
+
+My research interest lies in *machine learning (deep learning) and its applications, computer vision and computational geometry.*\n
+In the future, I may also be eager to do research on broad AI like /statistical model, reinforcement learning and reasoning/.
+
+== Research Experience
+
+~~~
+{}{img_left}{img/JHU.png}{}{120}{54}{http://ccvl.jhu.edu/}
+*Research Intern in Medical Image Analysis*\n
+/Jul 2018 - now, JHU, Baltimore, MD, USA/\n
+Mentor: [http://lingxixie.com/Home.html Dr. Lingxi Xie]\n
+Supervisor: [http://www.cs.jhu.edu/~ayuille/ Prof. Alan L. Yuille]\n
+Project: *Geometric deep learning on 3D medical image segmentation*\n
+In addition, I reproduced [https://github.com/twni2016/OrganSegRSTN_PyTorch OrganSegRSTN] in PyTorch from CAFFE at CCVL lab [https://arxiv.org/abs/1709.04518 \[paper\]], which is a state-of-the-art model in medical image segmentation.
+~~~
+
+~~~
+{}{img_left}{https://www.sensetime.com/style/image/logo01-1.png}{}{120}{34}{https://www.sensetime.com/}
+*Research & Development Intern in Autonomous Driving*\n
+/Apr 2018 - June 2018, Sensetime Research, Beijing, China/\n
+Mentor: Dr. Zhe Wang\n
+Supervisor: [http://shijianping.me/ Dr. Jianping Shi]\n
+Project: Lane tracking and smoothing in autonomous driving map using OpenCV and C\+\+
+~~~
+
+~~~
+{}{img_left}{img/PROS12.jpg}{}{120}{120}{https://promise12.grand-challenge.org/}
+*Research Assistant in Computer Vision*\n
+/Mar 2017 - now, PKU, Beijing, China/\n
+Advisor: [http://www.cis.pku.edu.cn/faculty/vision/zlin/zlin.htm Prof. Zhouchen Lin]\n
+Project: Medical Image Segmentation /Oct 2017 - Oct 2018/ \n
+We designed an end-to-end segmentation neural network based on DeepLab and CliqueNet to implement prostate image segmentation using PyTorch framework.
+~~~
+
+== Education
+
+~~~
+{}{img_left}{img/PKU.png}{}{120}{120}{http://www.pku.edu.cn}
+Sept. 2015 - June 2019 (Expected) \n
+School of Electronics Engineering and Computer Science, /Peking University/ \n
+*Overall GPA: 3.72 \/ 4.0, Ranking: 7\% (15 \/ 207) \n* 
+~~~
+
+~~~
+{}{img_left}{img/Stanford.png}{}{120}{120}{https://www.stanford.edu/}
+June 2017 - Aug. 2017 (Summer Session)\n
+Visiting Student, /Stanford University/ \n
+*Overall GPA: 4.1 \/ 4.3*
+~~~
+
+== Contact
+
+*Address:\n *
+Room 132, Building No.31, Peking University, Beijing, China, 100871.\n
+321 East University Parkway, Baltimore, MD, USA, 21218.
+
+*Email:\n *
++twni2016\@gmail.com\n+
++twni\@pku.edu.cn\n+
+
+*Homepage:\n*
+[http://victorni.me]
+
+== Visitors
+~~~
+{}{img_left}{https://www.clustrmaps.com/map_v2.png?d=MLJjjYf-bPMMetsHcbf6NWB0Fb1R1f2-1eRistxD0Bg&cl=ffffff}{Visit tracker}{300}{150}{https://clustrmaps.com/site/1a23l}
+~~~
+
+
+
+
