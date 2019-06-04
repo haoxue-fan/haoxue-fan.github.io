@@ -9,7 +9,7 @@ Senior Student Majoring in Psychology\n
 [pdf/CV_HaoxueFan_2019Jun.pdf Curriculum Vitae] | [https://github.com/haoxue-fan Github]\n
 Email: haoxuefan1997 AT gmail DOT com\n\n
 
-*NOTE: Tianwei Ni is a bad teacher. Do not enroll in his class!!!*
+*NOTE: Jun 4 2019: This page is still under construction, not a publicly released one*
 ~~~
 
 ~~~
@@ -18,78 +18,76 @@ Email: haoxuefan1997 AT gmail DOT com\n\n
 
 == About me
 
-I'm Haoxue Fan (樊浩雪), a senior student in [http://pku.pku.edu.cn School of Psychological and Cognitive Sciences] at [http://www.pku.edu.cn PKU].
+I'm Haoxue Fan (樊浩雪), a senior student at [http://www.pku.edu.cn PKU] majoring in Psychology with a minor in Economics. I will join [http://www.psych.nyu.edu/phelpslab/index.html Prof. Elizabeth Phelps's Lab] at [https://www.harvard.edu/ Harvard University], starting this fall. 
 
-I'm now a research intern at [http://www.cs.jhu.edu/~ayuille/ Bloomberg Distinguished Prof. Alan L. Yuille]'s [http://ccvl.jhu.edu/ CCVL lab] at [https://www.jhu.edu/ the Johns Hopkins University]. My research project is medical image analysis using geometric deep learning.
+I have long been fascinated by human's complex social behavior and emotino experience. I am particularly interested in how people solve uncertainty during social interaction and how this process is influenced by contextual factors(e.g. stress, social identity). I am also interested in collective decision-making. As a long-term goal, I hope that I can leverage my knowledge to better understand clinical population. 
 
-I'm also a research assistant focusing on computer vision advised by [http://www.cis.pku.edu.cn/faculty/vision/zlin/zlin.htm Prof. Zhouchen Lin] in [http://www.klmp.pku.edu.cn/ Key Laboratory of Machine Perception] at PKU since 2017.
-
-My research interest lies in *machine learning (deep learning) and its applications, computer vision and computational geometry.*\n
-In the future, I may also be eager to do research on broad AI like /statistical model, reinforcement learning and reasoning/.
+I believe that an interdisciplinary and multi-level approach is beneficial to study these complicated (and interesting!) topics. I plan to combine behavioral experiments, computational modeling and neuroimaging method, and gaining insights from disciplines such as Economics, Computer Science, and Sociology. 
 
 == Research Experience
 
 ~~~
-{}{img_left}{img/JHU.png}{}{120}{54}{http://ccvl.jhu.edu/}
-*Research Intern in Medical Image Analysis*\n
-/Jul 2018 - now, JHU, Baltimore, MD, USA/\n
-Mentor: [http://lingxixie.com/Home.html Dr. Lingxi Xie]\n
-Supervisor: [http://www.cs.jhu.edu/~ayuille/ Prof. Alan L. Yuille]\n
-Project: *Geometric deep learning on 3D medical image segmentation*\n
-In addition, I reproduced [https://github.com/twni2016/OrganSegRSTN_PyTorch OrganSegRSTN] in PyTorch from CAFFE at CCVL lab [https://arxiv.org/abs/1709.04518 \[paper\]], which is a state-of-the-art model in medical image segmentation.
+{}{img_left}{img/FHL.jpg}{}{300}{200}
+*Social and Affective Neuroscience Lab*, Brown University, Providence, RI\n
+/Research Assistant, Jul 2018 - Dec 2018/\n
+PI: [https://www.brown.edu/academics/cognitive-linguistic-psychological-sciences/people/faculty/oriel-feldmanhall Prof. Oriel FeldmanHall]\n
+- Project: /Emotion Prediction Error(more detailed info coming soon!)/\n
 ~~~
 
 ~~~
 {}{img_left}{https://www.sensetime.com/style/image/logo01-1.png}{}{120}{34}{https://www.sensetime.com/}
-*Research & Development Intern in Autonomous Driving*\n
-/Apr 2018 - June 2018, Sensetime Research, Beijing, China/\n
-Mentor: Dr. Zhe Wang\n
-Supervisor: [http://shijianping.me/ Dr. Jianping Shi]\n
-Project: Lane tracking and smoothing in autonomous driving map using OpenCV and C\+\+
-~~~
-
-~~~
-{}{img_left}{img/PROS12.jpg}{}{120}{120}{https://promise12.grand-challenge.org/}
-*Research Assistant in Computer Vision*\n
-/Mar 2017 - now, PKU, Beijing, China/\n
-Advisor: [http://www.cis.pku.edu.cn/faculty/vision/zlin/zlin.htm Prof. Zhouchen Lin]\n
-Project: Medical Image Segmentation /Oct 2017 - Oct 2018/ \n
-We designed an end-to-end segmentation neural network based on DeepLab and CliqueNet to implement prostate image segmentation using PyTorch framework.
+*Learning and Decision-making Lab*, Peking University, China\n
+/Research Assistant, May 2016 - July 2019/\n
+PI: Prof. Jian Li
+- Project - /Effect of oxytocin on perception of fairness and intention/
+- Project - /Effect of acute stress on information seeking behavior/
 ~~~
 
 == Education
+~~~
+{}{img_left}{img/Harvard.png}{}{120}{120}
+*Harvard University*, Cambridge, MA\n
+/Sept 2019 - June. 2024 (Expected)/\n
+Ph.D. in Psychology\n
+Advisor: Prof. Elizabeth Phelps
 
 ~~~
-{}{img_left}{img/PKU.png}{}{120}{120}{http://www.pku.edu.cn}
-Sept. 2015 - June 2019 (Expected) \n
-School of Electronics Engineering and Computer Science, /Peking University/ \n
-*Overall GPA: 3.72 \/ 4.0, Ranking: 7\% (15 \/ 207) \n* 
+
+~~~
+{}{img_left}{img/PKU.png}{}{120}{120}
+*Peking University*, Beijing, China\n
+/Sept. 2015 - June 2019 (Expected)/ \n
+B.S. in Psychology, Minor in Economics\n
+Thesis: /Effect of acute stress on information-seeking behavior/\n
+Advised by: Prof. Jian Li
+
 ~~~
 
 ~~~
-{}{img_left}{img/Stanford.png}{}{120}{120}{https://www.stanford.edu/}
-June 2017 - Aug. 2017 (Summer Session)\n
-Visiting Student, /Stanford University/ \n
-*Overall GPA: 4.1 \/ 4.3*
+{}{img_left}{img/Berkeley.png}{}{120}{120}
+*UC Berkeley*, Berkeley, CA\n
+/June 2017 - Aug. 2017 (Summer Session)/\n
+Visiting Student\n
+
 ~~~
 
 == Contact
 
 *Address:\n *
-Room 132, Building No.31, Peking University, Beijing, China, 100871.\n
-321 East University Parkway, Baltimore, MD, USA, 21218.
+Room 222, Building No.37, Peking University, Beijing, China, 100871.\n
 
 *Email:\n *
-+twni2016\@gmail.com\n+
-+twni\@pku.edu.cn\n+
++haoxuefan1997\@gmail.com\n+
++fanhaoxue\@pku.edu.cn\n+
++haoxue_fan@g.harvard.edu+
 
 *Homepage:\n*
-[http://victorni.me]
+[http://haoxue-fan.github.io]
 
-== Visitors
-~~~
-{}{img_left}{https://www.clustrmaps.com/map_v2.png?d=MLJjjYf-bPMMetsHcbf6NWB0Fb1R1f2-1eRistxD0Bg&cl=ffffff}{Visit tracker}{300}{150}{https://clustrmaps.com/site/1a23l}
-~~~
+# == Visitors
+# ~~~
+# {}{img_left}{https://www.clustrmaps.com/map_v2.png?d=MLJjjYf-bPMMetsHcbf6NWB0Fb1R1f2-1eRistxD0Bg&cl=ffffff}{Visit tracker}{300}{150}{https://clustrmaps.com/site/1a23l}
+# ~~~
 
 
 
