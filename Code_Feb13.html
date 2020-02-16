@@ -1,0 +1,927 @@
+<!-- Code for Haoxue's FYP -->
+<!-- Current research goal: investigate the role of attitude in social influence and metacognition -->
+<!-- Last updated on Feb 12, 2020 -->
+<!-- Difference from Feb 12: change the calibration into 2-down-1-up 70/25 procedure -->
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Load relevant libraries -->
+    <title>My experiment</title>
+    <script src="jspsych-6.0.5/jspsych.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-rdk.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-survey-likert.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-html-slider-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-image-slider-response.js"></script> <!--display image-->
+    <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+    <!--remember to put https: here-->
+    <!-- <script src="components/jstat.js"></script> -->
+    <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css">
+    </link>
+</head>
+
+<body></body>
+<script>
+
+    // Todo (possible)
+    // Add border
+
+    /* Create timeline*/
+    var timeline = [];
+
+
+    var para = {// matlab style all para! yay
+        range: 2,
+        rep: 1
+    }
+    /* define welcome message trial */
+    var welcome = {
+        type: "html-keyboard-response",
+        stimulus: "Welcome to the experiment!",
+        prompt: "Press any key to continue",
+        //choices: [],
+        post_trial_gap: 500
+    };
+    timeline.push(welcome);
+
+    /* define caliberation instructions */
+
+    //Todo: add confidence instructions here
+    var caliberate_instructions1 = {
+        type: "html-keyboard-response",
+        stimulus: "<p>In this experiment, You will be asked to perform a motion judgment task</p>" +
+            "<p>For this first task you will perform 240 trials divided over 3 blocks.</p>" +
+            "<p>We do this to identify how many dots you need to see to reach a specific performance-level.</p>" +
+            "Please keep your eyes fixated on the white fixation dot during the trials. Moving dots will appear around it.</p>" +
+            "Press any key when you are ready to an example of the moving dots.",
+        //prompt: "Press any key to continue",
+        post_trial_gap: 500
+    };
+
+    var caliberate_instructions2 = {
+        type: "html-keyboard-response",
+        stimulus: "<p>In this example, all dots moved to the right.</p>" +
+            "<p>Now press any key again to see an example in which all dots move to the left.<p>",
+        //prompt: "Press any key to continue",
+        post_trial_gap: 500
+    };
+
+    var caliberate_instructions3 = {
+        type: "html-keyboard-response",
+        stimulus: "<p>These examples were both pretty easy because all dots moved in one direction.</p>" +
+            "<p>In the experiment, some of the dots will behave randomly, whereas others move to the right or left of the screen.</p>" +
+            "<p>Your task is to guess the overall direction of the dots.</p>" +
+            "<p>To see what this random motion looks like, press any key again.</p>",
+        //prompt: "Press any key to continue",
+        post_trial_gap: 500
+    };
+
+    var caliberate_instructions4 = {
+        type: "html-keyboard-response",
+        stimulus: "<p>During the experiment you will have less time to look at the dots.</p>" +
+            "<p>Press any key to see what an actual trial will look like.</p>",
+        //prompt: "Press any key to continue",
+        post_trial_gap: 500
+    };
+
+    var caliberate_instructions5 = {
+        type: "html-keyboard-response",
+        stimulus: "<p>When the dots disappear it is time to respond. You can put your fingers on the 1 and 2 buttons.</p>" +
+            "<p>If you think the dots moved to the left, press \"1\". If you think the dots moved to the right, press \"2\"</p>" +
+            "<p>We will now show you the moving dots again. Look carefully, and decide whether they are</p>" +
+            "<p>moving to the right or to the left. After the dots disappear, press 1 for left or 2 for right.</p>" +
+            "<p>Make sure to not respond before the dots disappear</p>" +
+            "<p>Press any key when you are ready to try out this example.</p>",
+        //prompt: "Press any key to continue",
+        post_trial_gap: 500
+    };
+
+    var caliberate_instructions6 = {
+        type: "html-keyboard-response",
+        stimulus: "<p>The correct answer was 2, the dots were moving to the right. When you start the task, you will</p>" +
+            "<p>hear a high tone if you choose the correct response and a low tone if you choose the wrong response.</p>" +
+            "<p>If you have any questions before beginning the experiment, please ask the experimenter now.</p>" +
+            "<p>If you are ready to start the experiment, press any key to begin.</p>",
+        //prompt: "Press any key to continue",
+        post_trial_gap: 500
+    };
+
+    var caliberate_demo1 = { // slow, right
+        type: "rdk",
+        post_trial_gap: 0,
+        number_of_dots: 200,
+        RDK_type: 3,
+        coherent_direction: 0,//function(){
+        //return jsPsych.randomization.sampleWithoutReplacement([0, 360], 1)[0];
+        //},
+        coherence: 1,
+        trial_duration: 2000, /* if -1, the stimulus will be displayed until a valid response is received*/
+        aperture_type: 1,
+        response_ends_trial: false, // the trial will not be stopped even if the participant has made a decision early
+        move_distance: 3, // analogous to speed. - Question: not sure whether I want to set it so quick
+        fixation_cross: true,
+        fixation_cross_color: "white",
+        border: true,
+        border_color: "white",
+    }
+
+    var caliberate_demo2 = { // slow left
+        type: "rdk",
+        post_trial_gap: 0,
+        number_of_dots: 200,
+        RDK_type: 3,
+        coherent_direction: 180,//function(){
+        //return jsPsych.randomization.sampleWithoutReplacement([0, 360], 1)[0];
+        //},
+        coherence: 1,
+        trial_duration: 2000, /* if -1, the stimulus will be displayed until a valid response is received*/
+        aperture_type: 1,
+        response_ends_trial: false, // the trial will not be stopped even if the participant has made a decision early
+        move_distance: 3, // analogous to speed. - Question: not sure whether I want to set it so quick
+    }
+
+    var caliberate_demo3 = { //slow right 0.2 coherence
+        type: "rdk",
+        post_trial_gap: 0,
+        number_of_dots: 200,
+        RDK_type: 3,
+        coherent_direction: 0,//function(){
+        //return jsPsych.randomization.sampleWithoutReplacement([0, 360], 1)[0];
+        //},
+        coherence: 0.2,
+        trial_duration: 2000, /* if -1, the stimulus will be displayed until a valid response is received*/
+        aperture_type: 1,
+        response_ends_trial: false, // the trial will not be stopped even if the participant has made a decision early
+        move_distance: 3, // analogous to speed. - Question: not sure whether I want to set it so quick
+    }
+
+    var caliberate_demo4 = { // fast left 0.3 coherence
+        type: "rdk",
+        post_trial_gap: 0,
+        number_of_dots: 200,
+        RDK_type: 3,
+        coherent_direction: 180,//function(){
+        //return jsPsych.randomization.sampleWithoutReplacement([0, 360], 1)[0];
+        //},
+        coherence: 0.3,
+        trial_duration: 300, /* if -1, the stimulus will be displayed until a valid response is received*/
+        aperture_type: 1,
+        response_ends_trial: false, // the trial will not be stopped even if the participant has made a decision early
+        move_distance: 3, // analogous to speed. - Question: not sure whether I want to set it so quick
+    }
+
+    var caliberate_demo5 = { // fast right 0.3 coherence
+        type: "rdk",
+        post_trial_gap: 0,
+        number_of_dots: 200,
+        RDK_type: 3,
+        coherent_direction: 0,//function(){
+        //return jsPsych.randomization.sampleWithoutReplacement([0, 360], 1)[0];
+        //},
+        coherence: 0.3,
+        trial_duration: 300, /* if -1, the stimulus will be displayed until a valid response is received*/
+        aperture_type: 1,
+        response_ends_trial: false, // the trial will not be stopped even if the participant has made a decision early
+        move_distance: 3, // analogous to speed. - Question: not sure whether I want to set it so quick
+    }
+
+    var caliberate_demo_decision5 = {
+        type: "html-keyboard-response",
+        stimulus: function () {
+            //var left_key = jsPsych.timelineVariable('choices', true)[0];
+            //var right_key = jsPsych.timelineVariable('choices', true)[1];
+            //L and R can be changed into pic in the future
+            var left = 'L';
+            var right = 'R';
+            return "<p>" + left + " or " + right + "?</p>"
+        },
+        choices: ['f', 'j'],
+        post_trial_gap: 500,
+        data: { task: 'demo' },
+        on_finish: function (data) {
+            if (data.key_press == 'j') {
+                data.feedback = 'correct';
+            } else {
+                data.feedback = 'wrong'
+            }
+        }
+    }
+
+    var caliberate_demo = {
+        timeline: [caliberate_instructions1, caliberate_demo1,
+            caliberate_instructions2, caliberate_demo2,
+            caliberate_instructions3, caliberate_demo3,
+            caliberate_instructions4, caliberate_demo4,
+            caliberate_instructions5, caliberate_demo5, caliberate_demo_decision5, //actually I need to record response here
+            caliberate_instructions6],
+    }
+    //timeline.push(caliberate_demo);
+
+    // Question: steven's code don't have fixation in that?
+    /* define fixation */
+    // var fixation = {
+    //     type: 'html-keyboard-response',
+    //     stimulus: '<div style="font-size:60px;">+</div>',
+    //     choices: jsPsych.NO_KEYS,
+    //     trial_duration: function () {
+    //         return jsPsych.randomization.sampleWithoutReplacement([250, 500, 750, 1000, 1250, 1500, 1750, 2000], 1)[0];
+    //     },
+    //     data: { task: 'fixation' }
+    // }
+
+    /* ** subject to change ** define test stimuli */
+    var test_stimuli = [
+        { coherent_direction: 0, choices: ['f', 'j'], correct_choice: 'j', data: { task: 'caliberate', direction: 'right', wrong_direction: 'left' } }, //right
+        { coherent_direction: 180, choices: ['f', 'j'], correct_choice: 'f', data: { task: 'caliberate', direction: 'left', wrong_direction: 'right' } }, //left,
+    ];
+
+    /* define trial with 2 choices and 1 correct choice */
+    /* beginning: coherence 0.2 */
+    var test_trial_first = {
+        type: "rdk",
+        post_trial_gap: 0,
+        number_of_dots: 200,
+        RDK_type: 3,
+        choices: jsPsych.timelineVariable('choices'),
+        correct_choice: jsPsych.timelineVariable('correct_choice'),
+        coherent_direction: jsPsych.timelineVariable('coherent_direction'),
+        coherence: 0.2,
+        trial_duration: 300, /* if -1, the stimulus will be displayed until a valid response is received*/
+        aperture_type: 1,
+        response_ends_trial: false, // the trial will not be stopped even if the participant has made a decision early
+        move_distance: 3, // analogous to speed. - Question: not sure whether I want to set it so quick
+        data: jsPsych.timelineVariable('data'),
+        data: { phase: 'first', feature: 'first_coherence' } // ***** seems that it will cover the one used before... how to deal wih this problem?
+        // seem problem happens in the future trials.
+        //Todo: add unlimited response time
+        //Todo: parameters for caliberation ()
+    };
+
+    var test_trial = {
+        type: "rdk",
+        post_trial_gap: 0,
+        number_of_dots: 200,
+        RDK_type: 3,
+        choices: jsPsych.timelineVariable('choices'),
+        correct_choice: jsPsych.timelineVariable('correct_choice'),
+        coherent_direction: jsPsych.timelineVariable('coherent_direction'),
+        //coherence: jsPsych.timelineVariable('coherence'),
+        coherence: function () {
+            var feedback_prev = jsPsych.data.get().last(3).values()[0].feedback;
+            var feedback_prev2 = jsPsych.data.get().last(7).values()[0].feedback;
+            var state_prev = jsPsych.data.get().last(3).values()[0].state;
+            var coherence_prev = jsPsych.data.get().last(4).values()[0].coherence;
+            var coherence_now = coherence_prev;
+            var phase_prev = jsPsych.data.get().last(4).values()[0].phase;
+            if (phase_prev == "first") { // make a special case for the two correct situation
+                if (feedback_prev == "correct" && feedback_prev2 == "correct") {
+                    coherence_now = coherence_prev - 0.01;
+                }
+            }
+            if (feedback_prev == "correct" && state_prev == "second") { // normal situation
+                coherence_now = coherence_prev - 0.01;
+            }
+            else if (feedback_prev == "wrong") {
+                coherence_now = coherence_prev + 0.01;
+            }
+            return coherence_now
+        },
+        trial_duration: 300, /* if -1, the stimulus will be displayed until a valid response is received*/
+        aperture_type: 1,
+        response_ends_trial: false, // the trial will not be stopped even if the participant has made a decision early
+        move_distance: 3, // analogous to speed. - Question: not sure whether I want to set it so quick
+        data: jsPsych.timelineVariable('data'),
+        data: { phase: 'normal', feature: 'normal_coherence' }, // this kind of adding data works
+        //Todo: add unlimited response time
+        //Todo: parameters for caliberation ()
+    };
+
+    var decision_trial = {
+        type: "html-keyboard-response",
+        stimulus: function () {
+            //var left_key = jsPsych.timelineVariable('choices', true)[0];
+            //var right_key = jsPsych.timelineVariable('choices', true)[1];
+            //L and R can be changed into pic in the future
+            var left = 'L';
+            var right = 'R';
+            return "<p>" + left + " or " + right + "?</p>"
+        },
+        choices: jsPsych.timelineVariable('choices'),
+        post_trial_gap: 200,
+        data: { task: 'decision' },
+        on_finish: function (data) {
+            if (data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(jsPsych.timelineVariable('correct_choice', true))) {
+                data.feedback = 'correct';
+            } else {
+                data.feedback = 'wrong';
+            }
+            var phase_now = jsPsych.data.get().last(2).values()[0].phase; // when we specify things in the on_finish feature, this trial has already FINISHED
+            //console.log(jsPsych.data.get().last(2).values()[0])
+            // if phase_prev == "first", 
+            if (phase_now == "first") { // caveat: should find a way to list the second one as 
+                data.state = "first"; // a little not precise for the second first trial - but leave it like this now
+            }
+            else {
+                var phase_prev = jsPsych.data.get().last(6).values()[0].phase;
+                var state_prev = jsPsych.data.get().last(5).values()[0].state;
+                var feedback_prev = jsPsych.data.get().last(5).values()[0].feedback;
+                if (data.feedback == "correct") {
+                    if (feedback_prev == "correct" && state_prev == "first" && phase_prev !== "first") {
+                        data.state = "second";
+                    }
+                    else {
+                        data.state = "first";
+                    }
+                }
+            }
+        }
+    }
+
+    // My question: put the feedback here will it reinforce the confidence?
+    /* define feedback */
+    var feedback_trial = {
+        type: "html-keyboard-response",
+        choices: jsPsych.NO_KEYS,
+        stimulus: function () {
+            var feedback = jsPsych.data.get().last(2).values()[0].feedback; // now needs to be last two because we are tracing back one more
+            if (feedback == "correct") {
+                var color = "blue";
+            }
+            else {
+                var color = "red";
+            }
+            return "<p> <span style = \"color:" + color + "; font-size: 200%\"><b>" + feedback + "</b></span></p>"
+        },
+        trial_duration: 500,
+        //post_trial_gap: 500,
+        data: { task: 'feedback' }
+        //Todo: how to send feedback? beep or word?
+    };
+
+    var feedback_trial_debug = { // add the coherence output
+        type: "html-keyboard-response",
+        stimulus: function () {
+            var feedback = jsPsych.data.get().last(2).values()[0].feedback; // now needs to be last two because we are tracing back one more
+            var coherence = jsPsych.data.get().last(3).values()[0].coherence;
+            if (feedback == "correct") {
+                var color = "blue";
+            }
+            else {
+                var color = "red";
+            }
+            return "<p> <span style = \"color:" + color + "; font-size: 200%\"><b>" + feedback + "</b></span></p>" +
+                "<p>coherence level is" + coherence + "</p>"
+        },
+        post_trial_gap: 200,
+        data: { task: 'feedback' }
+        //Todo: how to send feedback? beep or word?
+    };
+
+    // Todo: add vertical line to it?
+    // Todo: change it multiple times? only one opportunity?
+    var confidence_rating_1 = {
+        // may need to check the display of the confidence scale
+        type: "html-slider-response",
+        stimulus: "Please select a location on the confidence scale.",
+        labels: ['LEFT', 'RIGHT'],
+        start: function () {
+            return Math.random() * 100
+        },
+        values: ['100', '80', '60', '60', '80', '100'],
+        center: true,
+        data: { task: 'confidence' }
+        //incentive - SF has the instruction for that?
+    }
+
+    //Todo: make it more beautiful - 1~3 and 3 becomes a variable?
+
+    var caliberate_break3 = {
+        type: "html-keyboard-response",
+        stimulus: "<p>End of the caliberation!</p>",
+        post_trial_gap: 500
+    }
+
+    /* **define phase here?** integrate fixation, test_trial and feedback_trial into one object */
+    // response time is unlimited here
+    // each array in the timeline_variable will be used (not use just one)
+
+    // note that the feedback_trial is still in debug mode here
+    var caliberate_start_procedure = {
+        timeline: [test_trial_first, decision_trial, confidence_rating_1, feedback_trial_debug], // put feedback after confidence_rating lol
+        timeline_variables: test_stimuli, // not just choose one but all of them!
+        repetitions: 1, // 0 or 1 means no repetition. 
+        randomize_order: true,
+        data: { phase: 'caliberate_start' }
+        // Todo: save data after each trial?
+    }
+
+    var caliberate_procedure = {
+        timeline: [test_trial, decision_trial, confidence_rating_1, feedback_trial_debug], // put feedback after confidence_rating lol
+        timeline_variables: test_stimuli,
+        repetitions: para.rep, // (70-2)/2. when debugging, just to make sure the total is more than 25
+        randomize_order: true,
+        data: { phase: 'caliberate_real' }
+
+        // Todo: save data after each trial?
+    }
+
+    // It took me so long to debug the last 25 trials calculation...
+    var caliberate_block = {
+        timeline: [caliberate_start_procedure, caliberate_procedure, caliberate_break3],
+        repetitions: 1,
+        on_finish: function (data) {
+            var coherence_prev_all = jsPsych.data.get().filter({ feature: 'normal_coherence' }).select('coherence').values;
+            var range = para.range; // usually 25
+            // var jstat_object = jStat(coherence_prev_all) - jstat object is not needed here
+            // var tmp = coherence_prev_all.slice(coherence_prev_all.length - range,).length;
+            var threshold_cal = jStat.mean(coherence_prev_all.slice(coherence_prev_all.length - range));
+            // console.log(coherence_prev_all.slice(coherence_prev_all.length - range,))
+            // console.log(coherence_prev_all.length-range)
+            // console.log(coherence_prev_all.length)
+            // var total = 0, i;
+            // for (i = coherence_prev_all.length - range; i < coherence_prev_all.length; i += 1) {
+            // total += coherence_prev_all[i];
+            // console.log(i)
+            // }
+            // var threshold_cal_2 = total/range; - threshold_cal_1 and threshold_cal_2 are the same here!
+            var perform_prev_all = jsPsych.data.get().filter({ task: 'decision' }).select('feedback').values;
+            var correct_count = 0;
+            for (i = perform_prev_all.length - range; i < perform_prev_all.length; i += 1) {
+                if (perform_prev_all[i] == "correct") {
+                    correct_count += 1;
+                }
+            }
+            var correct_avg = correct_count / range;
+            jsPsych.data.addProperties({ threshold: threshold_cal, accuracy: correct_avg }); // will add to each trial
+            // I think I have achieved my goal but still not sure how many times the console.log will carry out (definitely not just once)
+        }
+        // I dont know whether I need randomize_order here
+        // and I don't think I care about the phase order
+    }
+
+    //timeline.push(caliberate_block);
+
+    // Some instructions and practice about the formal test
+
+    // The observation period
+
+    // todo: reconcile phase, feature, task
+
+    // define a variable of threshold coherence - seems to wrok yay!
+    // TODO: 70.7%? how to make sure of that?
+
+    var test_trial_threshold = {
+        type: "rdk",
+        post_trial_gap: 0,
+        number_of_dots: 200,
+        RDK_type: 3,
+        choices: jsPsych.timelineVariable('choices'),
+        correct_choice: jsPsych.timelineVariable('correct_choice'),
+        coherent_direction: jsPsych.timelineVariable('coherent_direction'),
+        coherence: jsPsych.data.get().select('threshold').mean(), // values or means?
+        trial_duration: 300, /* if -1, the stimulus will be displayed until a valid response is received*/
+        aperture_type: 1,
+        response_ends_trial: false, // the trial will not be stopped even if the participant has made a decision early
+        move_distance: 3, // analogous to speed. - Question: not sure whether I want to set it so quick
+        data: jsPsych.timelineVariable('data'),
+        // data: { phase: 'threshold' }
+        //Todo: add unlimited response time
+        //Todo: parameters for caliberation ()
+    };
+
+
+
+    /* define instructions trial */
+    // Instructions are under construction (for the observe part)
+    var observe_instructions = {
+        type: "html-keyboard-response",
+        stimulus: "<p>In this part, you will observe two other participants play the previous task. We have an attention check.",
+        //prompt?
+        post_trial_gap: 500
+    };
+
+
+    /* Define observation stimuli */
+    // Todo: advisor's name? What did Oriel do?
+    // My logic: if we don't want people to get any further information than those we want to give them, maybe we should just use # to refer to them?
+    // Maybe we can further pair them with different color, use the sihoulette as SF has used?
+    // If we pair them with color, do we need to ask the participants about their opinion on color??
+    // But the problem with their stimuli: it seems to be a guy - should we also ask the participant to indicate his/her guessing about the adviser at the end of the exp?
+    var advisor_stimuli = [
+        // keep accucary the same level as the participant now
+        { coherent_direction: 0, choices: ['f', 'j'], correct_choice: 'j', coherence: 0.1, name: 'Victor', accuracy: 0.1, data: { test_part: 'advisor', direction: 'right', wrong_direction: 'left' } }, //right
+        { coherent_direction: 180, choices: ['f', 'j'], correct_choice: 'j', coherence: 0.1, name: 'Victor', accuracy:0.1, data: { test_part: 'advisor', direction: 'left', wrong_direction: 'right' } }, //left
+        { coherent_direction: 0, choices: ['f', 'j'], correct_choice: 'j', coherence: 0.1, name: 'Victoria', accuracy: 0.1, data: { test_part: 'advisor', direction: 'right', wrong_direction: 'left' } }, //right
+        { coherent_direction: 180, choices: ['f', 'j'], correct_choice: 'j', coherence: 0.1, name: 'Victoria', accuracy: 0.1, data: { test_part: 'advisor', direction: 'left', wrong_direction: 'right' } }, //left
+
+        // { coherent_direction: 0, choices: ['f', 'j'], correct_choice: 'j', coherence: jsPsych.data.get().select('threshold').mean(), name: 'Victor', accuracy: jsPsych.data.get().select('accurracy').mean(), data: { test_part: 'advisor', direction: 'right', wrong_direction: 'left' } }, //right
+        // { coherent_direction: 180, choices: ['f', 'j'], correct_choice: 'j', coherence: jsPsych.data.get().select('threshold').mean(), name: 'Victor', accuracy: jsPsych.data.get().select('accurracy').mean(), data: { test_part: 'advisor', direction: 'left', wrong_direction: 'right' } }, //left
+        // { coherent_direction: 0, choices: ['f', 'j'], correct_choice: 'j', coherence: jsPsych.data.get().select('threshold').mean(), name: 'Victoria', accuracy: jsPsych.data.get().select('accurracy').mean(), data: { test_part: 'advisor', direction: 'right', wrong_direction: 'left' } }, //right
+        // { coherent_direction: 180, choices: ['f', 'j'], correct_choice: 'j', coherence: jsPsych.data.get().select('threshold').mean(), name: 'Victoria', accuracy: jsPsych.data.get().select('accurracy').mean(), data: { test_part: 'advisor', direction: 'left', wrong_direction: 'right' } }, //left
+    ]
+
+    /* Display each round's advisor */
+    // Question: integrate this frame and the next frame together?
+    // var advisor_name = {
+    //     type: "html-keyboard-response",
+    //     stimulus: function () {
+    //         var advisor = jsPsych.timelineVariable('name', true);
+    //         return "<p> You are observing <b>" + advisor + "</b>'s choice.</p>"
+    //     },
+    //     choices: jsPsych.NO_KEYS,
+    //     trial_duration: 1000,
+    //     data: { test_part: 'advisor' }
+        // Todo: add the advisor's picture?
+    //}
+
+    /* Display each round advisor's choice and attention check*/
+    // question: how to add attention check?
+    // Todo: add picture
+    var advisor_response = {
+        type: "html-keyboard-response",
+        stimulus: function () {
+            var advisor = jsPsych.timelineVariable('name', true);
+            var accuracy = jsPsych.timelineVariable('accuracy', true);
+            var random = Math.random(); // U ~ [0,1]
+            var correct_answer = jsPsych.data.get().last(1).values()[0].direction;
+            var wrong_answer = jsPsych.data.get().last(1).values()[0].wrong_direction;
+            if (accuracy > random) {
+                var feedback_current_trial = 'correct';
+                var color = 'blue';
+                var advisor_answer = correct_answer[0].toUpperCase();
+            }
+            else {
+                var feedback_current_trial = 'wrong';
+                var color = 'red';
+                var advisor_answer = wrong_answer[0].toUpperCase();
+                
+            }
+            console.log(color)
+            return "<p><b>" + advisor + "</b> choose <b>" + advisor_answer + "</b>.</p>" +// problem of left and right
+                "<br><p><b>" + advisor + "</b>'s choice was <span style = \"color:" + color + "\"><b>" + 
+                    feedback_current_trial + "</b></span></p>." 
+                    // TODO: the sequence of display?
+                // "<p>The dots are actually moving towards " + correct_answer + ".</p>" +
+                // "<p>Is " + advisor + "'s choice correct?'</p>" +
+                // "<p>Press 'f' for correct and 'j' for wrong.</p>"
+        },
+        data: { test_part: 'advisor' },
+        post_trial_gap : 500
+        // save these data?
+        // incentive - not deciding right then not proceeding?
+    }
+
+    /* **define phase here?** integrate fixation, test_trial, advisor_name, advisor_response into one object */
+    var advisor_response_procedure = {
+        timeline: [test_trial_threshold, advisor_response], //advisor_name is temporarily eliminated 
+        timeline_variables: advisor_stimuli,
+        repetitions: 1,
+        randomize_order: true
+        // Q: is it really necessary to let the participants see the dots moving? Let them make a comparison with themselves?
+    }
+    timeline.push(observe_instructions);
+    timeline.push(advisor_response_procedure);
+
+    /* **Subject to change** Advisor Rating */
+    /* attitude induction phase instruction*/
+    var rate_instructions = {
+        type: "html-keyboard-response",
+        stimulus: "<p>[Constructing]This part should be advisor rating. The next slide is just an example.</p>",
+        post_trial_gap: 500
+    };
+
+    var scale_1 = [
+        "Strongly Disagree",
+        "Disagree",
+        "Neutral",
+        "Agree",
+        "Strongly Agree"
+    ]
+    var likert_1 = {
+        type: 'survey-likert',
+        questions: [
+            { prompt: "I think advisor A is a good person", labels: scale_1 }
+        ]
+        // seems to be easy to use
+    }
+
+    var rate_procedure = {
+        timeline: [likert_1],
+        // show them on the same screen?
+    }
+
+    timeline.push(rate_instructions)
+    timeline.push(rate_procedure)
+
+    /* attitude induction phase instruction*/
+    var attitude_instructions1 = {
+        type: "html-keyboard-response",
+        stimulus: "<p>In this part of the experiment, you will have the opportunity to make money by participating in</p>" +
+            "<p>multiple economic interactions with the two partners you have encountered in the previous part of the experiment.</p>" +
+            "<p>For each interaction, your partner will choose how much money to give to you. Based on their decisions, </p>" +
+            "<p>the money will be distributed accordingly. At the beginning of each trial, your partner starts off with $1, and you start off with nothing</p>" +
+            "<p>In each interaction, your partner will choose how much of their $1 (if any) to give to you. </p>" +
+            "<p>They can choose to give you any portion of their $1. You will see how much money your partner chose to give to you. </p>" +
+            "<p>You will also be asked how you feel now on a scale from Negative to Positive</p>" +
+            "<p>Press any key to see further information about how the payoff works.</p>",
+        post_trial_gap: 500
+    };
+
+    var attitude_instructions2 = {
+        type: "html-keyboard-response",
+        stimulus: "<p>Payment will work as follows:</p>" +
+            "<p>At the end of the experiment, a trial from all the economic interactions will be randomly picked by the computer to be paid out.</p>" +
+            "<p>Based on that trial, you and your partner will receive the money as determined on that trial.</p>" +
+            "<p>Press any key to see an example trial.</p>",
+        post_trial_gap: 500
+    };
+
+    var attitude_demo1;
+
+    var attitude_demo = {
+        timeline: [attitude_instructions1,
+            attitude_instructions2, attitude_demo1]
+    }
+    //timeline.push(attitude_demo)
+
+    /* advisor share parameter */
+    var attitude_stimuli = [
+        { name: 'A', share_mean: 0.8, share_sd: 0.1, choices: ['f', 'j'], },
+        { name: 'B', share_mean: 0.2, share_sd: 0.1, choices: ['f', 'j'], },
+    ]
+
+    /* On each round, show advisor name */
+    var attitude_advisor = {
+        type: "html-keyboard-response",
+        stimulus: function () {
+            var advisor = jsPsych.timelineVariable('name', true);
+            return "<p>In this round, <b>" + advisor + "</b> has received $1. </p>" // may need to add pic in the future
+        },
+        post_trial_gap: 100
+    };
+
+    /* Show advisor's decision in DG */
+    var attitude_advisor_decision = {
+        type: "html-keyboard-response",
+        stimulus: function () {
+            var advisor = jsPsych.timelineVariable('name', true);
+            var current_share_prop_fixed = jsPsych.timelineVariable('share_mean', true);
+            var current_share_std_fixed = jsPsych.timelineVariable('share_sd', true);
+            var current_share_prop = Math.max(jStat.normal.sample(current_share_prop_fixed, current_share_std_fixed), 0);
+            // var current_share = current_share_prop.toFixed(2); // perserve 2 decimal places - not sure why it doesn't work sometime
+            var current_share = (Math.floor(current_share_prop*100)/100).toFixed(2); // this double insurance seems to fix the toFixed() problem but I am not 100% sure
+            var current_keep = (1-current_share).toFixed(2);
+            return "<b>" + advisor + "</b> has decided to keep $" + current_keep + " and send $" + current_share + " to you.</p>"
+        }
+    }
+    var feeling_scale = [ // 5 point likert scale?
+        "Very Negative",
+        "Negative",
+        "Neutral",
+        "Positive",
+        "Strong Positive"
+    ]
+
+    var feeling_likert = {
+        type: 'survey-likert',
+        questions: [
+            { prompt: "How do you feel now?", labels: feeling_scale }
+            // or I should use a VAS?
+        ]
+    }
+
+    /* integrate the whole attitude thing into one object */
+    var attitude_procedure = {
+        timeline: [attitude_advisor, attitude_advisor_decision, feeling_likert],
+        timeline_variables: attitude_stimuli, // 2 in total
+        repetitions: 4,
+        randomize_order: true
+    }
+    timeline.push(attitude_procedure)
+
+    /* rating process */
+    //timline.push(rate_instructions)
+    //timeline.push(rate_procedure)
+
+    /* joint decision phase */
+
+    // need further change
+    var joint_instructions1 = {
+        type: "html-keyboard-response",
+        stimulus: "<p>You will now begin the final task, in which you will perform 360 trials divided over 4 blocks.</p>" +
+            "<p>Every trial consists of dots moving to the left or right. Press 'f' for left and 'j' for right.</p>" +
+            "<p>Make sure to not think about it for too long, because you only have 1.5 seconds to decide.</p>" +
+            "<p>After making your decision, you will also be asked to report your confidence.</p>" +
+            "<p>Remember the participants you encountered in the previous economic game? We have recorded their decision on the same trial. </p>" +
+            "<p>You can use that information as advice to adjust your initial response.</p>" +
+            "<p>Press any key when you are ready to see what advice looks like.</p>",
+        post_trial_gap: 500
+    };
+
+    // Todo: how to explain their varying confidence?
+    var joint_instructions2 = {
+        type: "html-keyboard-response",
+        stimulus: "<p>Recall that the accuracy of both Adviser A and Adviser B (need change here) are both (something)</p>" +
+            "<p>In other words, they are same accurate in determining the direction of the dots. </p>" +
+            "<p>However, the confidence of the advice can vary across trials.</p>" +
+            "<p>Press any key to see an example of a relatively confident decision.</p>",
+        post_trial_gap: 500
+    };
+
+    var joint_instructions3 = {
+        type: "html-keyboard-response",
+        stimulus: "<p>During the experiment you will have less time to look at the advice.</p>" +
+            "<p>Press any key to see what actual advice will look like.</p>",
+        post_trial_gap: 500
+    };
+
+    var joint_instructions4 = {
+        type: "html-keyboard-response",
+        stimulus: "After seeing their advice, you will be asked to rate your confidence again.</p>" +
+            "<p>Press any key to see an example trial.</p>",
+        post_trial_gap: 500
+    };
+
+    var joint_instructions5 = {
+        type: "html-keyboard-response",
+        stimulus: "<p>You will now do 6 practice trials to get used to the advice.</p>" +
+            "<p>Press any key to begin the practise trials when you are ready.</p>",
+        post_trial_gap: 500
+    };
+
+    var joint_instructions6 = {
+        type: "html-keyboard-response",
+        stimulus: "<p>This was the last practise trial. </p>" +
+            "<p>If you are ready to start the experiment, press any key to begin.</p>",
+        post_trial_gap: 500
+    };
+
+    // to be defined
+    var joint_demo1;
+    var joint_demo2;
+    var joint_demo3;
+    var joint_demo4;
+    var joint_demo5;
+
+
+    var joint_demo = {
+        timeline: [joint_instructions1, joint_demo1,
+            joint_instructions2, joint_demo2,
+            joint_instructions3, joint_demo3,
+            joint_instructions4, joint_demo4,
+            joint_instructions5, joint_demo5,  //actually I need to record response here
+            joint_instructions6]
+    }
+    timeline.push(joint_demo)
+
+    /* real joint decision process */
+
+    //test_trial_threshold 
+    //joint_decision_trial
+    //confidence_rating_1
+    //advice_confidence
+    //confidence_rating_2
+
+    var joint_decision_trial = { // limited time & no state parameter
+        type: "html-keyboard-response",
+        stimulus: function () {
+            var left = 'L';
+            var right = 'R';
+            return "<p>" + left + " or " + right + "?</p>"
+        },
+        choices: jsPsych.timelineVariable('choices'),
+        post_trial_gap: 200,
+        trial_duration: 1500,
+        data: { task: 'decision' },
+        on_finish: function (data) {
+            if (data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(jsPsych.timelineVariable('correct_choice', true))) {
+                data.feedback = 'correct';
+            } else {
+                data.feedback = 'wrong';
+            }
+        }
+    }
+
+    //Todo: display too slow
+
+    var advice_confidence = {
+        type: "html-keyboard response"
+    }; // how to generate their confidence using the data from the subject's?
+
+    var confidence_rating_2; //include the picture (as the stimulus?)
+
+
+    var joint_procedure = {
+        timeline: [test_trial_threshold, joint_decision_trial, confidence_rating_1, advice_confidence, confidence_rating_2],
+        timeline_variables: advisor_stimuli, // 4 in total (two directions, 2 advisor)
+        repetition: 1,
+        randomize_order: true,
+        data: { phase: 'joint' }
+    }
+    /* advisor characteristic has been defined */
+
+
+    // var confidence_rating_2 = {
+    //     type: "html-slider-response",
+    //     stimulus: function() {
+    //         var advisor = jsPsych.timelineVariable('name', true);
+    //         var accuracy = jsPsych.timelineVariable('accuracy', true);
+    //         var random = Math.random(); //[0,1]
+    //         var correct_answer = jsPsych.data.get().last(2).values()[0].direction; // last(2) is due to advisor_name
+    //         var wrong_answer = jsPsych.data.get().last(2).values()[0].wrong_direction;
+    //         if (accuracy > random){
+    //             var feedback_current_trial = 'correct';
+    //             var advisor_answer = correct_answer;
+    //         }
+    //         else{
+    //             var feedback_current_trial = 'wrong';
+    //             var advisor_answer = wrong_answer;
+    //         }
+    //         return advisor+"'s choice is "+advisor_answer+".</p>"+
+    //         "Which direction do you think the dots are moving?"
+    //     },
+    //             labels:['left','','','','right'],
+    //     start: function(){
+    //         return Math.random() * 100
+    //     }
+    // }
+
+    var decision_trial_2 = {
+        type: "html-keyboard-response",
+        stimulus: function () {
+            var advisor = jsPsych.timelineVariable('name', true);
+            var accuracy = jsPsych.timelineVariable('accuracy', true);
+            var random = Math.random(); //[0,1]
+            var correct_answer = jsPsych.data.get().last(3).values()[0].direction; // last(2) is due to advisor_name
+            var wrong_answer = jsPsych.data.get().last(3).values()[0].wrong_direction;
+            var left = 'L';
+            var right = 'R';
+            if (accuracy > random) {
+                var feedback_current_trial = 'correct';
+                var advisor_answer = correct_answer;
+            }
+            else {
+                var feedback_current_trial = 'wrong';
+                var advisor_answer = wrong_answer;
+            }
+            return "<b>" + advisor + "</b>'s choice is " + advisor_answer + ".</p>" +
+                "<p>Is your choice " + left + " or " + right + "?</p>"
+        },
+        choices: jsPsych.timelineVariable('choices'),
+        post_trial_gap: 1000,
+        data: { task: 'decision' },
+        //'L' & 'R'
+    }
+
+    // var decision_trial = {
+    //     type: "html-keyboard-response",
+    //     stimulus: function(){
+    //         //var left_key = jsPsych.timelineVariable('choices', true)[0];
+    //         //var right_key = jsPsych.timelineVariable('choices', true)[1];
+    //         //L and R can be changed into pic in the future
+    //         var left = 'L';
+    //         var right = 'R';
+    //         return "<p>"+left+" or "+right+"?</p>"
+    //         },
+    //     choices: jsPsych.timelineVariable('choices'),
+    //     post_trial_gap: 1000,
+    //     data: {task: 'decision'},
+    //     on_finish: function(data){
+    //         if(data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(jsPsych.timelineVariable('correct_choice', true))){
+    //             data.feedback = 'correct';
+    //         }else{
+    //             data.feedback = 'wrong'
+    //         }
+    //     }
+    // }
+
+    // var test_procedure = {
+    //     timeline: [fixation, test_trial, decision_trial, feedback_trial],
+    //     timeline_variables: test_stimuli,
+    //     repetitions: 1,
+    //     randomize_order: true,
+    //     data: {phase: 'caliberate'}
+    //     // Todo: save data after each trial?
+    // }
+
+
+    //timeline.push(confidence_instructions);
+    //timeline.push(confidence_procedure)
+
+    //timeline.push(rate_instructions)
+    // timeline.push(rate_procedure)
+
+    /* start the experiment */
+    jsPsych.init({
+        timeline: timeline,
+        on_finish: function () {
+            jsPsych.data.displayData();
+        }
+    });
+</script>
+
+</html>
