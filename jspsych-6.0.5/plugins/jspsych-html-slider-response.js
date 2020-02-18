@@ -8,7 +8,13 @@
  *
  */
 
-
+ // Changed by Haoxue Feb 2020
+ // Goal: remove the 'Continue button'
+ //       add different values
+ //       add a center indicator/value
+ //       add vertical lines for these values
+ // todo: hide the thumb appearance at first?
+ 
 jsPsych.plugins['html-slider-response'] = (function() {
 
   var plugin = {};
@@ -54,6 +60,12 @@ jsPsych.plugins['html-slider-response'] = (function() {
         array: true,
         description: 'Labels of the slider.',
       },
+      same_position: {
+        type: jsPsych.plugins.parameterType.BOOL,
+        pertty_name: 'Same position',
+        default: true,
+        description: 'Make sure the slider for img-slider and html-slider appears at the same place.',
+      },
       //Haoxue's adding
       values: {
         type: jsPsych.plugins.parameterType.HTML_STRING,
@@ -62,12 +74,25 @@ jsPsych.plugins['html-slider-response'] = (function() {
         array: true,
         description: 'Value labels of the slider (in the string form).'
       },
-      center: {
+      vertical: {
         type: jsPsych.plugins.parameterType.BOOL,
-        pretty_name: 'Center',
+        pretty_name: 'Vertical marker',
         default: false,
+        description: 'Show vertical markers to facilitate measurement.'
+      },
+      center: {
+        type: jsPsych.plugins.parameterType.HTML_STRING,
+        pretty_name: 'Center',
+        default: undefined,
         description: 'If true, a 50% will be displayed in the middle of the slider.'
       },
+      vertical_center: {
+        type: jsPsych.plugins.parameterType.BOOL,
+        pretty_name: 'Vertical marker (center)',
+        default: false,
+        description: 'Show vertical marker for the center value'
+      },
+
       //end adding
       slider_width: {
         type: jsPsych.plugins.parameterType.INT,
@@ -117,9 +142,21 @@ jsPsych.plugins['html-slider-response'] = (function() {
 
   plugin.trial = function(display_element, trial) {
 
+    // define vertical line
+    // if(trial.vertical != false){
+    //     var html = '<style>'
+    // }
+    // else{
     var html = '<div id="jspsych-html-slider-response-wrapper" style="margin: 100px 0px;">';
+    // }
     html += '<div id="jspsych-html-slider-response-stimulus">' + trial.stimulus + '</div>';
-    html += '<div class="jspsych-html-slider-response-container" style="position:relative; margin: 0 auto 3em auto; ';
+
+    if(trial.same_position){
+      html += '<div class="jspsych-html-slider-response-container" style="position:relative; margin: 0 auto 3em auto; '; // try absolute
+    }
+    else{
+    html += '<div class="jspsych-html-slider-response-container" style="position:relative; margin: 0 auto 3em auto; '; // try absolute
+    }
 
     
     
@@ -133,30 +170,40 @@ jsPsych.plugins['html-slider-response'] = (function() {
         
         // add middle 50
         html += '<br>';
-        if(trial.center != false){
+        if(typeof(trial.center) != 'undefined'){
           var width = 0;
           var left_offset = 48; // magic num. need to double check 
           //html += '<div id = "jspsych-html-slider-response-stimulus">' + '50' + '</div>'
           html += '<div style="display: inline-block; position: absolute; left:'+left_offset+'%; text-align: center; width: '+width+'%;">';
-          html += '<span style="text-align: center; font-size: 80%;">'+'50'+'</span>';
-          html += '</div>'
-    
-
+          html += '<span style="text-align: center; font-size: 80%;">'+trial.center+'</span>';
+          html += '</div>';
+        }
+        if(trial.vertical_center != false){
+          html += '<hr width = "1" size = "20" style = "display: inline-block; position: absolute; top: 60%;">';
         }
         // add each value
-
         for(var j=0; j < trial.values.length; j++){
           var width = 100/(trial.values.length-1);
           var left_offset = (j * (100 /(trial.values.length - 1))) - (width/2);
+          var left_offset_tick = (j * (100 / (trial.values.length-1)));
           //html += '<div>'+width+' '+left_offset+' '+trial.labels.length+'</div>';
-          html += '<div style="display: inline-block; position: absolute; left:'+left_offset+'%; text-align: center; width: '+width+'%;">';
+          html += '<div style="display: inline-block; position: absolute; left:'+left_offset+'%; text-align: center; width: '+width+'%;">'; //absolute means relative to its nearest ancestor
           html += '<span style="text-align: center; font-size: 80%;">'+trial.values[j]+'</span>';
-          html += '</div>'
+                    // Todo: change the size according to the monitor?
+          html += '</div>';
+          if(trial.vertical != false){
+          html += '<hr width="1" size="20" style="display: inline-block; position: absolute; top: 60%; left:'+left_offset_tick+'%;">'; // thanks to: https://stackoverflow.com/questions/5605306/is-there-anyway-to-have-an-hr-under-text-with-no-vertical-space
+          }
         }
-        html += '<br>'; // can't use <p> not know why but can see this link:https://www.quora.com/What-is-the-difference-between-a-p-tag-and-br-tag
-    
+        html += '<br>'; // can't use <p> not know why but can see this link: https://www.quora.com/What-is-the-difference-between-a-p-tag-and-br-tag
         //adding end
     
+        
+        // width: 1px; /* Line width */
+        // background-color: black; /* Line color */
+        // height: 100%; /* Override in-line if you want specific height. */
+        // float: left;
+
 
     html += '<input type="range" value="'+trial.start+'" min="'+trial.min+'" max="'+trial.max+'" step="'+trial.step+'" style="width: 100%;" id="jspsych-html-slider-response-response"></input>';
     html += '<div>';
@@ -196,7 +243,7 @@ jsPsych.plugins['html-slider-response'] = (function() {
 
 
     //html += '<input type="range" value="'+trial.start+'" min="'+trial.min+'" max="'+trial.max+'" step="'+trial.step+'" style="width: 100%;" id="jspsych-html-slider-response-response"></input>';
-    // Haoxue editing
+    // Haoxue editing - future: may need to put the option of adding 'continue' back?
     display_element.querySelector('#jspsych-html-slider-response-response').addEventListener('click', function() {
       // measure response time
       var endTime = performance.now();

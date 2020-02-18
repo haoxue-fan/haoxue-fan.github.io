@@ -1,5 +1,5 @@
 /**
- * jspsych-image-slider-response
+ * jspsych-image-slider-response-adv
  * a jspsych plugin for free response survey questions
  *
  * Josh de Leeuw
@@ -13,13 +13,14 @@
 //       add different values
 //       add a center indicator/value
 //       add vertical lines for these values
+// Todo: change its color
 
-jsPsych.plugins['image-slider-response'] = (function () {
+jsPsych.plugins['image-slider-response-adv'] = (function () {
 
   var plugin = {};
 
   plugin.info = {
-    name: 'image-slider-response',
+    name: 'image-slider-response-adv',
     description: '',
     parameters: {
       stimulus: {
@@ -117,6 +118,18 @@ jsPsych.plugins['image-slider-response'] = (function () {
         default: 'white',
         description: 'Set the color for the vertical marker for the center value.'
       },
+      adv: {
+        type: jsPsych.plugins.parameterType.HTML_INT,
+        pretty_name: 'Advice',
+        default: undefined,
+        description: 'The advice of other player.'
+      },
+      adv_color: {
+        type: jsPsych.plugins.parameterType.HTML_STRING,
+        pretty_name: 'Advice color',
+        default: 'red',
+        description: 'The color of the advice marker and the advisor background.'
+      },
 
       //end adding
       slider_width: {
@@ -147,7 +160,7 @@ jsPsych.plugins['image-slider-response'] = (function () {
       stimulus_duration: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus duration',
-        default: null,
+        default: 1000,
         description: 'How long to hide the stimulus.'
       },
       trial_duration: {
@@ -167,17 +180,9 @@ jsPsych.plugins['image-slider-response'] = (function () {
 
   plugin.trial = function (display_element, trial) {
 
-    // define vertical line
-    // if(trial.vertical != false){
-    //     var html = '<style>'
-    // }
-    // else{
-    // var html = '<div id="jspsych-image-slider-response-wrapper" style="margin: 100px 0px;">';
-    // }
-
     var html = '<div id="jspsych-image-slider-response-wrapper" style="margin: 100px 0px;">';
     html += '<div id="jspsych-image-slider-response-stimulus">';
-    html += '<img src="' + trial.stimulus + '" style="';
+    html += '<img src="' + trial.stimulus + '" style= "background-color:'+trial.adv_color+';';
     if (trial.stimulus_height !== null) {
       html += 'height:' + trial.stimulus_height + 'px; '
       if (trial.stimulus_width == null && trial.maintain_aspect_ratio) {
@@ -191,8 +196,16 @@ jsPsych.plugins['image-slider-response'] = (function () {
       }
     }
     html += '"></img>';
+
+
+
+    //
+    
+    //
     html += '</div>';
-    html += '<div class="jspsych-image-slider-response-container" style="position:relative; margin: 0 auto 3em auto; '; // try absolute
+
+    // draw the slider
+    html += '<div class="jspsych-image-slider-response-adv-container" style="position:relative; margin: 0 auto 3em auto; '; // try absolute
     if (trial.slider_width !== null) {
       html += 'width:' + trial.slider_width + 'px;';
     }
@@ -200,8 +213,8 @@ jsPsych.plugins['image-slider-response'] = (function () {
     //
 
 
-    // html += '<div id="jspsych-image-slider-response-stimulus">' + trial.stimulus + '</div>';
-    // html += '<div class="jspsych-image-slider-response-container" style="position:relative; margin: 0 auto 3em auto; ';
+    // html += '<div id="jspsych-image-slider-response-adv-stimulus">' + trial.stimulus + '</div>';
+    // html += '<div class="jspsych-image-slider-response-adv-container" style="position:relative; margin: 0 auto 3em auto; ';
 
 
 
@@ -216,10 +229,10 @@ jsPsych.plugins['image-slider-response'] = (function () {
     // add middle 50
     html += '<br>';
     if (typeof (trial.center) != 'undefined') {
-      var width = 0;
-      var left_offset = 48; // magic num. need to double check 
-      //html += '<div id = "jspsych-image-slider-response-stimulus">' + '50' + '</div>'
-      html += '<div style="display: inline-block; position: absolute; left:' + left_offset + '%; text-align: center; width: ' + width + '%;">'; // location here needs change - the absolute is causing problem
+      var width = 100;
+      var left_offset = 0; 
+      //html += '<div id = "jspsych-image-slider-response-adv-stimulus">' + '50' + '</div>'
+      html += '<div style="display: inline-block; position: absolute; left:' + left_offset + '%; text-align: center; width: ' + width + '%;">'; // draw a box and put the text in the middle
       html += '<span style="text-align: center; font-size: 80%;">' + trial.center + '</span>';
       html += '</div>';
     }
@@ -240,10 +253,16 @@ jsPsych.plugins['image-slider-response'] = (function () {
         html += '<hr width="1" size="20" style="display: inline-block; position: absolute; top: 60%; left:' + left_offset_tick + '%; border: 0.5px solid ' + trial.vertical_color + '">'; // thanks to: https://stackoverflow.com/questions/5605306/is-there-anyway-to-have-an-hr-under-text-with-no-vertical-space
       }
     }
+
+    // add adv 
+    var adv_offset = trial.adv;
+    // lets try give it id
+    html += '<hr id = "test" width = "1" size = "20" style = "display: inline-block; position: absolute; top: 60%; left:' + adv_offset + '%; border: 0.5px solid ' + trial.adv_color + '">';
+
     html += '<br>'; // can't use <p> not know why but can see this link: https://www.quora.com/What-is-the-difference-between-a-p-tag-and-br-tag
 
 
-    html += '<input type="range" value="' + trial.start + '" min="' + trial.min + '" max="' + trial.max + '" step="' + trial.step + '" style="width: 100%;" id="jspsych-image-slider-response-response"></input>';
+    html += '<input type="range" value="' + trial.start + '" min="' + trial.min + '" max="' + trial.max + '" step="' + trial.step + '" style="width: 100%;" id="jspsych-image-slider-response-adv-response"></input>';
     html += '<div>';
 
     for (var j = 0; j < trial.labels.length; j++) {
@@ -264,7 +283,7 @@ jsPsych.plugins['image-slider-response'] = (function () {
     }
     // Haoxue editing
     // add submit button
-    //html += '<button id="jspsych-image-slider-response-next" class="jspsych-btn" '+ (trial.require_movement ? "disabled" : "") + '>'+trial.button_label+'</button>';
+    //html += '<button id="jspsych-image-slider-response-adv-next" class="jspsych-btn" '+ (trial.require_movement ? "disabled" : "") + '>'+trial.button_label+'</button>';
     // end editing
     display_element.innerHTML = html;
 
@@ -274,24 +293,43 @@ jsPsych.plugins['image-slider-response'] = (function () {
     };
 
     if (trial.require_movement) {
-      display_element.querySelector('#jspsych-image-slider-response-response').addEventListener('change', function () {
-        display_element.querySelector('#jspsych-image-slider-response-next').disabled = false;
+      display_element.querySelector('#jspsych-image-slider-response-adv-response').addEventListener('change', function () {
+        display_element.querySelector('#jspsych-image-slider-response-adv-next').disabled = false;
       })
     }
 
 
-    //html += '<input type="range" value="'+trial.start+'" min="'+trial.min+'" max="'+trial.max+'" step="'+trial.step+'" style="width: 100%;" id="jspsych-image-slider-response-response"></input>';
+    if (trial.stimulus_duration !== null) {
+      jsPsych.pluginAPI.setTimeout(function() {
+        display_element.querySelector('#jspsych-image-slider-response-stimulus').style.visibility = 'hidden';
+        display_element.querySelector('#test').style.visibility = 'hidden';
+      }, trial.stimulus_duration);
+
+    }
+
+    // // end trial if trial_duration is set
+    // if (trial.trial_duration !== null) {
+    //   jsPsych.pluginAPI.setTimeout(function() {
+    //     end_trial();
+    //   }, trial.trial_duration);
+    // }
+
+
+
+
+
+    //html += '<input type="range" value="'+trial.start+'" min="'+trial.min+'" max="'+trial.max+'" step="'+trial.step+'" style="width: 100%;" id="jspsych-image-slider-response-adv-response"></input>';
     // Haoxue editing - future: may need to put the option of adding 'continue' back?
-    display_element.querySelector('#jspsych-image-slider-response-response').addEventListener('click', function () {
+    display_element.querySelector('#jspsych-image-slider-response-adv-response').addEventListener('click', function () {
       // measure response time
       var endTime = performance.now();
       response.rt = endTime - startTime;
-      response.response = display_element.querySelector('#jspsych-image-slider-response-response').value;
+      response.response = display_element.querySelector('#jspsych-image-slider-response-adv-response').value;
       // end editing
       if (trial.response_ends_trial) {
         end_trial();
       } else {
-        display_element.querySelector('#jspsych-image-slider-response-next').disabled = true;
+        display_element.querySelector('#jspsych-image-slider-response-adv-next').disabled = true;
       }
 
     });
@@ -313,11 +351,12 @@ jsPsych.plugins['image-slider-response'] = (function () {
       jsPsych.finishTrial(trialdata);
     }
 
-    if (trial.stimulus_duration !== null) {
-      jsPsych.pluginAPI.setTimeout(function () {
-        display_element.querySelector('#jspsych-image-slider-response-stimulus').style.visibility = 'hidden';
-      }, trial.stimulus_duration);
-    }
+    // if (trial.stimulus_duration !== null) {
+    //   jsPsych.pluginAPI.setTimeout(function () {
+    //     display_element.querySelector('#jspsych-image-slider-response-adv-stimulus').style.visibility = 'hidden';
+    //     display_element.querySelector('#test').style.visibility = 'hidden';
+    //   }, trial.stimulus_duration);
+    // }
 
     // end trial if trial_duration is set
     if (trial.trial_duration !== null) {
