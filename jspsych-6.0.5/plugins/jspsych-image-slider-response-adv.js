@@ -278,7 +278,7 @@ jsPsych.plugins['image-slider-response-adv'] = (function () {
     html += '</div>';
 
 
-    if (trial.prompt !== null) {
+    if (trial.prompt !== null) { //Haoxue: the prompt is under the confidence scale
       html += trial.prompt;
     }
     // Haoxue editing
@@ -307,12 +307,12 @@ jsPsych.plugins['image-slider-response-adv'] = (function () {
 
     }
 
-    // // end trial if trial_duration is set
-    // if (trial.trial_duration !== null) {
-    //   jsPsych.pluginAPI.setTimeout(function() {
-    //     end_trial();
-    //   }, trial.trial_duration);
-    // }
+    // end trial if trial_duration is set
+    if (trial.trial_duration !== null) {
+      jsPsych.pluginAPI.setTimeout(function() {
+        end_trial();
+      }, trial.trial_duration);
+    }
 
 
 

@@ -74,6 +74,14 @@ jsPsych.plugins["image-keyboard-response"] = (function() {
         default: true,
         description: 'If true, trial will end when subject makes a response.'
       },
+      //Haoxue
+      adv_color: {
+        type: jsPsych.plugins.parameterType.HTML_STRING,
+        pretty_name: 'Advice color',
+        default: 'red',
+        description: 'The color of the advice marker and the advisor background.'
+      },
+      //
     }
   }
 
@@ -81,6 +89,10 @@ jsPsych.plugins["image-keyboard-response"] = (function() {
 
     // display stimulus
     var html = '<img src="'+trial.stimulus+'" id="jspsych-image-keyboard-response-stimulus" style="';
+
+    //Haoxue
+    html += 'background-color:'+trial.adv_color+';';
+    //
     if(trial.stimulus_height !== null){
       html += 'height:'+trial.stimulus_height+'px; '
       if(trial.stimulus_width == null && trial.maintain_aspect_ratio){

@@ -1,13 +1,23 @@
 // create a global variables to set experiment related parameters
 var para = {
-    threshold_cal_range: 1, // n trials used to calculate threshold
+    threshold_cal_range: 5, // n trials used to calculate threshold
     calibrate_rep: 2, // repeat calibrate n times (besides 2 burn in trials)
     confidence_rep: 2,
     advisor_accuracy_rep: 2,
     attitude_rep: 2,
     joint_rep: 2,
-    choices: ['f', 'j'], // todo: change all into choices
+    choices: ['1', '2'], // todo: change all into choices
     threshold: 0, // initialize threshold
+    accuracy: 1, // initialize accuracy
+    accuracy_warmup: 0.5, // used for instruction
+    post_trial_gap_normal: 500,
+    trial_duration_normal: 2000,
+    advice_time_instruction: 3000,
+    advice_time_trial: 3000,
+    coherence_practice: [0.08, 0.16, 0.32],
+    color: ['yellow', 'red'],
+    name: ['Victor', 'Victoria'],
+    color_feedback: ['blue', 'red'], // feedback wrong and correct
 
 }
 
@@ -17,10 +27,14 @@ var calibrate_stimuli = [
     { coherent_direction: 180, choices: para.choices, correct_choice: para.choices[0], data: { task: 'calibrate', direction: 'left', wrong_direction: 'right' } }, //left,
 ];
 
-// var fixed_stimuli = [
-//     { coherent_direction: 0, choices: para.choices, correct_choice: para.choices[1], coherence: jsPsych.data.get().select('threshold').mean(),data: { task: 'calibrate', direction: 'right', wrong_direction: 'left' } }, //right
-//     { coherent_direction: 180, choices: para.choices, correct_choice: para.choices[0], coherence: jsPsych.data.get().select('threshold').mean(), data: { task: 'calibrate', direction: 'left', wrong_direction: 'right' } }, //left,
-// ];
+var practice_stimuli = [
+    {coherent_direction: 0, choices: para.choices, correct_choice: para.choices[1], coherence: para.coherence_practice[0], data: {task: 'practice', direction: 'right', wrong_direction: 'left'}},
+    {coherent_direction: 0, choices: para.choices, correct_choice: para.choices[1], coherence: para.coherence_practice[1], data: {task: 'practice', direction: 'right', wrong_direction: 'left'}},
+    {coherent_direction: 0, choices: para.choices, correct_choice: para.choices[1], coherence: para.coherence_practice[2], data: {task: 'practice', direction: 'right', wrong_direction: 'left'}},
+    {coherent_direction: 180, choices: para.choices, correct_choice: para.choices[0], coherence: para.coherence_practice[0], data: {task: 'practice', direction: 'left', wrong_direction: 'right'}},
+    {coherent_direction: 180, choices: para.choices, correct_choice: para.choices[0], coherence: para.coherence_practice[1], data: {task: 'practice', direction: 'left', wrong_direction: 'right'}},
+    {coherent_direction: 180, choices: para.choices, correct_choice: para.choices[0], coherence: para.coherence_practice[2], data: {task: 'practice', direction: 'left', wrong_direction: 'right'}},
+];
 
 /* Define observation stimuli */
 // Todo: advisor's name? What did Oriel do?
@@ -28,15 +42,3 @@ var calibrate_stimuli = [
 // Maybe we can further pair them with different color, use the sihoulette as SF has used?
 // If we pair them with color, do we need to ask the participants about their opinion on color??
 // But the problem with their stimuli: it seems to be a guy - should we also ask the participant to indicate his/her guessing about the adviser at the end of the exp?
-// var advisor_stimuli = [
-//     // keep accucary the same level as the participant now
-//     // { coherent_direction: 0, choices: ['f', 'j'], correct_choice: 'j', coherence: 0.1, name: 'Victor', accuracy: 0.1, data: { test_part: 'advisor', direction: 'right', wrong_direction: 'left' } }, //right
-//     // { coherent_direction: 180, choices: ['f', 'j'], correct_choice: 'j', coherence: 0.1, name: 'Victor', accuracy: 0.1, data: { test_part: 'advisor', direction: 'left', wrong_direction: 'right' } }, //left
-//     // { coherent_direction: 0, choices: ['f', 'j'], correct_choice: 'j', coherence: 0.1, name: 'Victoria', accuracy: 0.1, data: { test_part: 'advisor', direction: 'right', wrong_direction: 'left' } }, //right
-//     // { coherent_direction: 180, choices: ['f', 'j'], correct_choice: 'j', coherence: 0.1, name: 'Victoria', accuracy: 0.1, data: { test_part: 'advisor', direction: 'left', wrong_direction: 'right' } }, //left
-
-//     { coherent_direction: 0, choices: para.choices, correct_choice: para.choices[1], coherence: jsPsych.data.get().select('threshold').mean(), name: 'Victor', accuracy: jsPsych.data.get().select('accurracy').mean(), data: { test_part: 'advisor', direction: 'right', wrong_direction: 'left' } }, //right
-//     { coherent_direction: 180, choices: para.choices, correct_choice: para.choices[0], coherence: jsPsych.data.get().select('threshold').mean(), name: 'Victor', accuracy: jsPsych.data.get().select('accurracy').mean(), data: { test_part: 'advisor', direction: 'left', wrong_direction: 'right' } }, //left
-//     { coherent_direction: 0, choices: para.choices, correct_choice: para.choices[1], coherence: jsPsych.data.get().select('threshold').mean(), name: 'Victoria', accuracy: jsPsych.data.get().select('accurracy').mean(), data: { test_part: 'advisor', direction: 'right', wrong_direction: 'left' } }, //right
-//     { coherent_direction: 180, choices: para.choices, correct_choice: para.choices[0], coherence: jsPsych.data.get().select('threshold').mean(), name: 'Victoria', accuracy: jsPsych.data.get().select('accurracy').mean(), data: { test_part: 'advisor', direction: 'left', wrong_direction: 'right' } }, //left
-// ]

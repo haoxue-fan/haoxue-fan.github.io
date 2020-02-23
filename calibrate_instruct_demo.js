@@ -1,15 +1,19 @@
-// js file for caliberation instructions and demos
-//Todo: how to pass responses back?
-//Todo: add confidence instructions here
+// js file for calibration instructions and demos
+
+// Todo: add label for the data (maybe in the main exp)
+
 var calibrate_instructions1 = {
     type: "html-keyboard-response",
     stimulus: "<p>In this experiment, You will be asked to perform a motion judgment task</p>" +
         "<p>For this first task you will perform 240 trials divided over 3 blocks.</p>" +
         "<p>We do this to identify how many dots you need to see to reach a specific performance-level.</p>" +
-        "Please keep your eyes fixated on the white fixation dot during the trials. Moving dots will appear around it.</p>" +
-        "Press any key when you are ready to an example of the moving dots.",
-    //prompt: "Press any key to continue",
-    post_trial_gap: 500
+        "<p>Please keep your eyes fixated on the white fixation dot during the trials. Moving dots will appear around it.</p>" +
+        "<p>Press any key when you are ready to an example of the moving dots.</p>",
+    //prompt: "Press any key to continue", // I don't think a prmopt is needed - it doesnt appear at the end of the screen
+    post_trial_gap: para.post_trial_gap_normal,
+    trial_duration: para.trial_duration_normal,
+    response_ends_trial: true,
+    fixed_duration: 5000,
 };
 
 var calibrate_instructions2 = {
@@ -17,7 +21,9 @@ var calibrate_instructions2 = {
     stimulus: "<p>In this example, all dots moved to the right.</p>" +
         "<p>Now press any key again to see an example in which all dots move to the left.<p>",
     //prompt: "Press any key to continue",
-    post_trial_gap: 500
+    post_trial_gap: para.post_trial_gap_normal,
+    trial_duration: para.trial_duration_normal,
+    response_ends_trial: false
 };
 
 var calibrate_instructions3 = {
@@ -27,7 +33,9 @@ var calibrate_instructions3 = {
         "<p>Your task is to guess the overall direction of the dots.</p>" +
         "<p>To see what this random motion looks like, press any key again.</p>",
     //prompt: "Press any key to continue",
-    post_trial_gap: 500
+    post_trial_gap: para.post_trial_gap_normal,
+    trial_duration: para.trial_duration_normal,
+    response_ends_trial: false
 };
 
 var calibrate_instructions4 = {
@@ -35,7 +43,9 @@ var calibrate_instructions4 = {
     stimulus: "<p>During the experiment you will have less time to look at the dots.</p>" +
         "<p>Press any key to see what an actual trial will look like.</p>",
     //prompt: "Press any key to continue",
-    post_trial_gap: 500
+    post_trial_gap: para.post_trial_gap_normal,
+    trial_duration: para.trial_duration_normal,
+    response_ends_trial: false
 };
 
 var calibrate_instructions5 = {
@@ -47,21 +57,25 @@ var calibrate_instructions5 = {
         "<p>Make sure to not respond before the dots disappear</p>" +
         "<p>Press any key when you are ready to try out this example.</p>",
     //prompt: "Press any key to continue",
-    post_trial_gap: 500
+    post_trial_gap: para.post_trial_gap_normal,
+    trial_duration: para.trial_duration_normal,
+    response_ends_trial: false
 };
 
 var calibrate_instructions6 = {
     type: "html-keyboard-response",
     stimulus: "<p>The correct answer was 2, the dots were moving to the right. When you start the task, you will</p>" +
-        "<p>hear a high tone if you choose the correct response and a low tone if you choose the wrong response.</p>" +
-        "<p>If you have any questions before beginning the experiment, please ask the experimenter now.</p>" +
-        "<p>If you are ready to start the experiment, press any key to begin.</p>",
+        "<p>get feedback on your choice. If you choose the correct response, you will see 'correct' on the next screen.</p>"+
+        "<p>If you choose the wrong response, you will see 'wrong' on the next screen.</p>"+
+        "<p>If you are ready to start the experiment, press any key to begin.",
     //prompt: "Press any key to continue",
-    post_trial_gap: 500
+    post_trial_gap: para.post_trial_gap_normal,
+    trial_duration: para.trial_duration_normal,
+    response_ends_trial: false
 };
 
 // Todo: speed of rdk?
-var calibrate_demo1 = { // slow, right
+var calibrate_demo1 = { // 2s, right, unlimited
     type: "rdk",
     post_trial_gap: 0,
     number_of_dots: 200,
@@ -78,7 +92,7 @@ var calibrate_demo1 = { // slow, right
     border_color: "white",
 }
 
-var calibrate_demo2 = { // slow left
+var calibrate_demo2 = { // 2s, left, unlimited
     type: "rdk",
     post_trial_gap: 0,
     number_of_dots: 200,
@@ -95,7 +109,7 @@ var calibrate_demo2 = { // slow left
     border_color: "white",
 }
 
-var calibrate_demo3 = { //slow right 0.2 coherence
+var calibrate_demo3 = { //2s right 0.2 coherence
     type: "rdk",
     post_trial_gap: 0,
     number_of_dots: 200,
@@ -112,7 +126,7 @@ var calibrate_demo3 = { //slow right 0.2 coherence
     border_color: "white",
 }
 
-var calibrate_demo4 = { // fast left 0.3 coherence
+var calibrate_demo4 = { // 0.3s left 0.3 coherence - not quite sure why 0.3 coherence instead of 0.2?
     type: "rdk",
     post_trial_gap: 0,
     number_of_dots: 200,
@@ -155,7 +169,7 @@ var calibrate_demo_decision5 = {
         return "<p>" + left + " or " + right + "?</p>"
     },
     choices: para.choices,
-    post_trial_gap: 500,
+    post_trial_gap: para.post_trial_gap_normal,
     data: { task: 'demo' },
     on_finish: function (data) {
         if (data.key_press == 'j') {

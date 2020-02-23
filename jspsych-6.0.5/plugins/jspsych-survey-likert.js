@@ -71,7 +71,39 @@ jsPsych.plugins['survey-likert'] = (function() {
         pretty_name: 'Button label',
         default:  'Continue',
         description: 'Label of the button.'
-      }
+      },
+      // Haoxue
+      stimulus: {
+        type: jsPsych.plugins.parameterType.IMAGE,
+        pretty_name: 'Stimulus',
+        default: undefined,
+        description: 'The image to be displayed'
+      },
+      stimulus_height: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Image height',
+        default: null,
+        description: 'Set the image height in pixels'
+      },
+      stimulus_width: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Image width',
+        default: null,
+        description: 'Set the image width in pixels'
+      },
+      maintain_aspect_ratio: {
+        type: jsPsych.plugins.parameterType.BOOL,
+        pretty_name: 'Maintain aspect ratio',
+        default: true,
+        description: 'Maintain the aspect ratio after setting width or height'
+      },
+      adv_color: {
+        type: jsPsych.plugins.parameterType.HTML_STRING,
+        pretty_name: 'Advice color',
+        default: 'red',
+        description: 'The color of the advice marker and the advisor background.'
+      },
+      //
     }
   }
 
@@ -84,11 +116,30 @@ jsPsych.plugins['survey-likert'] = (function() {
     }
 
     var html = "";
+    //Haoxue
+    html += '<div id="jspsych-survey-likert-image">';
+    html += '<img src="' + trial.stimulus + '" style= "background-color:'+trial.adv_color+';';
+    if (trial.stimulus_height !== null) {
+      html += 'height:' + trial.stimulus_height + 'px; '
+      if (trial.stimulus_width == null && trial.maintain_aspect_ratio) {
+        html += 'width: auto; ';
+      }
+    }
+    if (trial.stimulus_width !== null) {
+      html += 'width:' + trial.stimulus_width + 'px; '
+      if (trial.stimulus_height == null && trial.maintain_aspect_ratio) {
+        html += 'height: auto; ';
+      }
+    }
+    html += '"></img>';
+    html += '</div>';
+
+    //
     // inject CSS for trial
     html += '<style id="jspsych-survey-likert-css">';
     html += ".jspsych-survey-likert-statement { display:block; font-size: 16px; padding-top: 40px; margin-bottom:10px; }"+
       ".jspsych-survey-likert-opts { list-style:none; width:"+w+"; margin:auto; padding:0 0 35px; display:block; font-size: 14px; line-height:1.1em; }"+
-      ".jspsych-survey-likert-opt-label { line-height: 1.1em; color: #444; }"+
+      ".jspsych-survey-likert-opt-label { line-height: 1.1em; color: #000; }"+ // haoxue: previous the color is #444. this is the color of the labels beneath the scale
       ".jspsych-survey-likert-opts:before { content: ''; position:relative; top:11px; /*left:9.5%;*/ display:block; background-color:#efefef; height:4px; width:100%; }"+
       ".jspsych-survey-likert-opts:last-of-type { border-bottom: 0; }"+
       ".jspsych-survey-likert-opts li { display:inline-block; /*width:19%;*/ text-align:center; vertical-align: top; }"+

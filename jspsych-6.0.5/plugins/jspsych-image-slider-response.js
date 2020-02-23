@@ -117,7 +117,18 @@ jsPsych.plugins['image-slider-response'] = (function () {
         default: 'white',
         description: 'Set the color for the vertical marker for the center value.'
       },
-
+      adv: {
+        type: jsPsych.plugins.parameterType.HTML_INT,
+        pretty_name: 'Advice',
+        default: null,
+        description: 'Show advice on the slider'
+      },
+      adv_color: {
+        type: jsPsych.plugins.parameterType.HTML_STRING,
+        pretty_name: 'Advice color',
+        default: 'red',
+        description: 'Set the color for the advice.'
+      },
       //end adding
       slider_width: {
         type: jsPsych.plugins.parameterType.INT,
@@ -240,6 +251,14 @@ jsPsych.plugins['image-slider-response'] = (function () {
         html += '<hr width="1" size="20" style="display: inline-block; position: absolute; top: 60%; left:' + left_offset_tick + '%; border: 0.5px solid ' + trial.vertical_color + '">'; // thanks to: https://stackoverflow.com/questions/5605306/is-there-anyway-to-have-an-hr-under-text-with-no-vertical-space
       }
     }
+
+        // add adv 
+        if (trial.adv != null){
+        var adv_offset = trial.adv;
+        // lets try give it id
+        html += '<hr id = "test" width = "1" size = "20" style = "display: inline-block; position: absolute; top: 60%; left:' + adv_offset + '%; border: 0.5px solid ' + trial.adv_color + '">';
+        }
+
     html += '<br>'; // can't use <p> not know why but can see this link: https://www.quora.com/What-is-the-difference-between-a-p-tag-and-br-tag
 
 
