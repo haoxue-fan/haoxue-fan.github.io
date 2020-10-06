@@ -223,7 +223,7 @@
           "Playing a stable machine always leads to winning more coins than a volatile machine.",
           "Playing a stable machine always leads to the same outcome. Playing a volatile machine leads to a different outcome each time.",
           "Playing a stable machine always lead to winning coins. Playing a volatile machine may lead to winning or losing coins.",
-          "Playing a stable machine leads to outcomes generated around an unchanged value. Playing a volatile machine leads to outcomes generated around a changing value."]
+          "Playing a stable machine leads to outcomes generated around an unchanged mean value. Playing a volatile machine leads to outcomes generated around a changing mean value."]
       },
     ],
     required: true,
@@ -283,7 +283,7 @@
       var dat1 = jsPsych.data.getLastTrialData().values()[1];
       var answer1 = JSON.parse(dat.responses).Q0;
       var answer2 = JSON.parse(dat.responses).Q1;
-      if (answer1.includes('click') == true && answer2.includes('outcome') == true) {
+      if (answer1.includes('click') == true && answer2.includes('mean') == true) {
         return false;
       } else {
         return true;
@@ -299,7 +299,7 @@
       var dat1 = jsPsych.data.getLastTrialData().values()[1];
       var answer1 = JSON.parse(dat.responses).Q0;
       var answer2 = JSON.parse(dat.responses).Q1;
-      if (answer1.includes('click') == true && answer2.includes('outcome') == true) {
+      if (answer1.includes('click') == true && answer2.includes('mean') == true) {
         return false;
       } else {
         return true;
@@ -315,7 +315,7 @@
       var dat1 = jsPsych.data.getLastTrialData().values()[1];
       var answer1 = JSON.parse(dat.responses).Q0;
       var answer2 = JSON.parse(dat.responses).Q1;
-      if (answer1.includes('click') == true && answer2.includes('outcome') == true) {
+      if (answer1.includes('click') == true && answer2.includes('mean') == true) {
         return false;
       } else {
         return true;
