@@ -1,20 +1,23 @@
 /**
- * jspsych-survey-text
- * a jspsych plugin for free response survey questions
+ * jspsych-survey-number
+ * a jspsych plugin for number response survey questions
  *
- * Josh de Leeuw
+ * Haoxue Fan (modified jspsych-survey-text by Josh de Leeuw)
  *
  * documentation: docs.jspsych.org
- *
+ *  
+ * What's different: 
+ * - submit button: <button> -> <input type="submit">. change eventListener accordingly (the button, the querySelector)
+ * - add <form> around the main text & delete <div>
  */
 
 
-jsPsych.plugins['survey-text'] = (function() {
+jsPsych.plugins['survey-number'] = (function() {
 
   var plugin = {};
 
   plugin.info = {
-    name: 'survey-text',
+    name: 'survey-number',
     description: '',
     parameters: {
       questions: {
@@ -85,34 +88,41 @@ jsPsych.plugins['survey-text'] = (function() {
     var html = '';
     // show preamble text
     if(trial.preamble !== null){
-      html += '<div id="jspsych-survey-text-preamble" class="jspsych-survey-text-preamble">'+trial.preamble+'</div>';
+      html += '<div id="jspsych-survey-number-preamble" class="jspsych-survey-number-preamble">'+trial.preamble+'</div>';
     }
     // add questions
+    html += '<form id=jspsych-survey-number-form>';
+
     for (var i = 0; i < trial.questions.length; i++) {
-      html += '<div id="jspsych-survey-text-"'+i+'" class="jspsych-survey-text-question" style="margin: 2em 0em;">';
-      html += '<p class="jspsych-survey-text">' + trial.questions[i].prompt + '</p>';
+      // html += '<div id="jspsych-survey-number-"'+i+'" class="jspsych-survey-number-question" style="margin: 2em 0em;">';
+      html += '<p class="jspsych-survey-number">' + trial.questions[i].prompt + '</p>';
       var autofocus = i == 0 ? "autofocus" : "";
       if(trial.questions[i].rows == 1){
-        html += '<input type="text" name="#jspsych-survey-text-response-' + i + '" size="'+trial.questions[i].columns+'" value="'+trial.questions[i].value+'" '+autofocus+'></input>';
+        html += '<input type="number" name="#jspsych-survey-number-response-' + i + '" size="'+trial.questions[i].columns+'" '+autofocus+' required/></input>';
       } else {
-        html += '<textarea name="#jspsych-survey-text-response-' + i + '" cols="' + trial.questions[i].columns + '" rows="' + trial.questions[i].rows + '" '+autofocus+'>'+trial.questions[i].value+'</textarea>';
+        html += '<textarea name="#jspsych-survey-number-response-' + i + '" cols="' + trial.questions[i].columns + '" rows="' + trial.questions[i].rows + '" '+autofocus+'>'+trial.questions[i].value+'</textarea>';
       }
-      html += '</div>';
+      // html += '</div>';
     }
-
+    html += '<p></p>'
+    html += '<input type="submit" id="jspsych-survey-number-next" class="jspsych-survey-number jspsych-btn" value="'+trial.button_label+'"></input>';
+    html += '</form>'
     // add submit button
-    html += '<button id="jspsych-survey-text-next" class="jspsych-btn jspsych-survey-text">'+trial.button_label+'</button>';
+    // html += '<button id="jspsych-survey-number-next" class="jspsych-btn jspsych-survey-number">'+trial.button_label+'</button>';
+
+    
 
     display_element.innerHTML = html;
 
-    display_element.querySelector('#jspsych-survey-text-next').addEventListener('click', function() {
+    display_element.querySelector('#jspsych-survey-number-form').addEventListener('submit', function() {
       // measure response time
       var endTime = (new Date()).getTime();
       var response_time = endTime - startTime;
 
       // create object to hold responses
       var question_data = {};
-      var matches = display_element.querySelectorAll('div.jspsych-survey-text-question');
+      // var matches = display_element.querySelectorAll('div.jspsych-survey-number-question');
+      var matches = display_element.querySelectorAll('#jspsych-survey-number-form');
       for(var index=0; index<matches.length; index++){
         var id = "Q" + index;
         var val = matches[index].querySelector('textarea, input').value;

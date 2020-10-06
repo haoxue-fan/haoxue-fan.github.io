@@ -12,7 +12,9 @@
  .jspsych-display-element {
    display: flex;
    flex-direction: column;
-   overflow-y: auto;
+   /* overflow-y: auto; */
+   overflow-y: hidden;
+   overflow-x: hidden;
  }
 
  .jspsych-display-element:focus {

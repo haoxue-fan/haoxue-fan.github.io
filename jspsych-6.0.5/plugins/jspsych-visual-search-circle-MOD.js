@@ -1,3 +1,10 @@
+//
+// Skip to content
+// hhillman231 / computational-phenotype
+// Code Issues 0 Pull requests 0 Projects 0 Security
+// computational-phenotype/jspsych-6.0.5/plugins/jspsych-visual-search-circle-MOD.js
+// @hhillman231 hhillman231 Add files via upload 0fb7ec0 7 days ago
+// 267 lines (221 sloc) 8.72 KB
 /**
  *
  * jspsych-visual-search-circle
@@ -12,7 +19,7 @@
  *
  **/
 
-jsPsych.plugins["visual-search-circle"] = (function() {
+jsPsych.plugins["visual-search-circle-MOD"] = (function() {
 
   var plugin = {};
 
@@ -65,27 +72,27 @@ jsPsych.plugins["visual-search-circle"] = (function() {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Fixation size',
         array: true,
-        default: [16, 16],
+        default: [20, 20],
         description: 'Two element array indicating the height and width of the fixation image.'
       },
       circle_diameter: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Circle diameter',
-        default: 250,
+        default: 350,
         description: 'The diameter of the search array circle in pixels.'
       },
-      target_present_key: {
-        type: jsPsych.plugins.parameterType.KEYCODE,
-        pretty_name: 'Target present key',
-        default: 'j',
-        description: 'The key to press if the target is present in the search array.'
-      },
-      target_absent_key: {
-        type: jsPsych.plugins.parameterType.KEYCODE,
-        pretty_name: 'Target absent key',
-        default: 'f',
-        description: 'The key to press if the target is not present in the search array.'
-      },
+      // target_present_key: {
+      //   type: jsPsych.plugins.parameterType.KEYCODE,
+      //   pretty_name: 'Target present key',
+      //   default: 'j',
+      //   description: 'The key to press if the target is present in the search array.'
+      // },
+      // target_absent_key: {
+      //   type: jsPsych.plugins.parameterType.KEYCODE,
+      //   pretty_name: 'Target absent key',
+      //   default: 'f',
+      //   description: 'The key to press if the target is not present in the search array.'
+      // },
       trial_duration: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Trial duration',
@@ -120,11 +127,13 @@ jsPsych.plugins["visual-search-circle"] = (function() {
     // possible stimulus locations on the circle
     var display_locs = [];
     var possible_display_locs = trial.set_size;
-    var random_offset = Math.floor(Math.random() * 360);
+    // var random_offset = Math.floor(Math.random() * 360);
     for (var i = 0; i < possible_display_locs; i++) {
       display_locs.push([
-        Math.floor(paper_size / 2 + (cosd(random_offset + (i * (360 / possible_display_locs))) * radi) - hstimw),
-        Math.floor(paper_size / 2 - (sind(random_offset + (i * (360 / possible_display_locs))) * radi) - hstimh)
+        Math.floor(paper_size / 2 + (cosd(i * (360 / possible_display_locs)) * radi) - hstimw),
+        Math.floor(paper_size / 2 - (sind(i * (360 / possible_display_locs)) * radi) - hstimh)
+        // Math.floor(paper_size / 2 + (cosd(random_offset + (i * (360 / possible_display_locs))) * radi) - hstimw),
+        // Math.floor(paper_size / 2 - (sind(random_offset + (i * (360 / possible_display_locs))) * radi) - hstimh)
       ]);
     }
 
@@ -179,26 +188,27 @@ jsPsych.plugins["visual-search-circle"] = (function() {
 
         var correct = false;
 
-        if (jsPsych.pluginAPI.compareKeys(info.key,trial.target_present_key) && trial.target_present ||
-            jsPsych.pluginAPI.compareKeys(info.key,trial.target_absent_key) && !trial.target_present) {
-          correct = true;
-        }
+        // if (jsPsych.pluginAPI.compareKeys(info.key,trial.target_present_key) && trial.target_present ||
+        //     jsPsych.pluginAPI.compareKeys(info.key,trial.target_absent_key) && !trial.target_present) {
+        //   correct = true;
+        // }
 
         clear_display();
 
-        end_trial(info.rt, correct, info.key);
+        end_trial(info.rt, correct); //*****************************************
+        // end_trial(info.rt, correct, presented, search_array_img); //*****************************************
 
       }
-
-      var valid_keys = [trial.target_present_key, trial.target_absent_key];
-
-      key_listener = jsPsych.pluginAPI.getKeyboardResponse({
-        callback_function: after_response,
-        valid_responses: valid_keys,
-        rt_method: 'date',
-        persist: false,
-        allow_held_key: false
-      });
+      //
+      // var valid_keys = [trial.target_present_key, trial.target_absent_key];
+      //
+      // key_listener = jsPsych.pluginAPI.getKeyboardResponse({
+      //   callback_function: after_response,
+      //   valid_responses: valid_keys,
+      //   rt_method: 'date',
+      //   persist: false,
+      //   allow_held_key: false
+      // });
 
       if (trial.trial_duration !== null) {
 
@@ -206,17 +216,19 @@ jsPsych.plugins["visual-search-circle"] = (function() {
 
           if (!trial_over) {
 
-            jsPsych.pluginAPI.cancelKeyboardResponse(key_listener);
+            // jsPsych.pluginAPI.cancelKeyboardResponse(key_listener);
 
             trial_over = true;
 
             var rt = null;
             var correct = 0;
-            var key_press = null;
+            // var presented = trial.to_present; //*****************************************
+            // var search_array_img = trial.search_array_images //*****************************************
+            // var key_press = null;
 
             clear_display();
 
-            end_trial(rt, correct, key_press);
+            end_trial(rt, correct/*, key_press*/);
           }
         }, trial.trial_duration);
 
@@ -227,17 +239,19 @@ jsPsych.plugins["visual-search-circle"] = (function() {
       }
     }
 
-
-    function end_trial(rt, correct, key_press) {
+    function end_trial(rt, correct) {
+    // function end_trial(rt, correct, presented, search_array_img) { //*****************************************
 
       // data saving
       var trial_data = {
         correct: correct,
         rt: rt,
-        key_press: key_press,
+        // key_press: key_press,
         locations: JSON.stringify(display_locs),
         target_present: trial.target_present,
-        set_size: trial.set_size
+        set_size: trial.set_size,
+        // presented: JSON.stringify(trial.to_present), //*****************************************
+        // search_array_img: JSON.stringify(trial.search_array_images) //*****************************************
       };
 
       // go to next trial

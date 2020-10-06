@@ -25,24 +25,6 @@ jsPsych.plugins["image-keyboard-response"] = (function() {
         default: undefined,
         description: 'The image to be displayed'
       },
-      stimulus_height: {
-        type: jsPsych.plugins.parameterType.INT,
-        pretty_name: 'Image height',
-        default: null,
-        description: 'Set the image height in pixels'
-      },
-      stimulus_width: {
-        type: jsPsych.plugins.parameterType.INT,
-        pretty_name: 'Image width',
-        default: null,
-        description: 'Set the image width in pixels'
-      },
-      maintain_aspect_ratio: {
-        type: jsPsych.plugins.parameterType.BOOL,
-        pretty_name: 'Maintain aspect ratio',
-        default: true,
-        description: 'Maintain the aspect ratio after setting width or height'
-      },
       choices: {
         type: jsPsych.plugins.parameterType.KEYCODE,
         array: true,
@@ -74,46 +56,20 @@ jsPsych.plugins["image-keyboard-response"] = (function() {
         default: true,
         description: 'If true, trial will end when subject makes a response.'
       },
-      //Haoxue
-      adv_color: {
-        type: jsPsych.plugins.parameterType.HTML_STRING,
-        pretty_name: 'Advice color',
-        default: 'red',
-        description: 'The color of the advice marker and the advisor background.'
-      },
-      //
     }
   }
 
   plugin.trial = function(display_element, trial) {
 
-    // display stimulus
-    var html = '<img src="'+trial.stimulus+'" id="jspsych-image-keyboard-response-stimulus" style="';
-
-    //Haoxue
-    html += 'background-color:'+trial.adv_color+';';
-    //
-    if(trial.stimulus_height !== null){
-      html += 'height:'+trial.stimulus_height+'px; '
-      if(trial.stimulus_width == null && trial.maintain_aspect_ratio){
-        html += 'width: auto; ';
-      }
-    }
-    if(trial.stimulus_width !== null){
-      html += 'width:'+trial.stimulus_width+'px; '
-      if(trial.stimulus_height == null && trial.maintain_aspect_ratio){
-        html += 'height: auto; ';
-      }
-    }
-    html +='"></img>';
+    var new_html = '<img src="'+trial.stimulus+'" id="jspsych-image-keyboard-response-stimulus"></img>';
 
     // add prompt
     if (trial.prompt !== null){
-      html += trial.prompt;
+      new_html += trial.prompt;
     }
 
-    // render
-    display_element.innerHTML = html;
+    // draw
+    display_element.innerHTML = new_html;
 
     // store response
     var response = {
@@ -168,7 +124,7 @@ jsPsych.plugins["image-keyboard-response"] = (function() {
       var keyboardListener = jsPsych.pluginAPI.getKeyboardResponse({
         callback_function: after_response,
         valid_responses: trial.choices,
-        rt_method: 'performance',
+        rt_method: 'date',
         persist: false,
         allow_held_key: false
       });

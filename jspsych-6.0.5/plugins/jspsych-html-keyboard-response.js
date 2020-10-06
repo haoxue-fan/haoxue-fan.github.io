@@ -54,13 +54,6 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
         default: true,
         description: 'If true, trial will end when subject makes a response.'
       },
-      // Haoxue
-      fixed_duration: {
-        type: jsPsych.plugins.parameterType.INT,
-        pretty_name: 'Fixed trial duration',
-        default: 0,
-        description: 'How long to show trial before responsive to keyboard.'
-      }
 
     }
   }
@@ -125,19 +118,12 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
       }
     };
 
-    var after_fixed = function(){
-      if (trial.trial_duration !== null) {
-        jsPsych.pluginAPI.setTimeout(function() {
-          end_trial();
-        }, trial.trial_duration);
-      }
-    }
     // start the response listener
     if (trial.choices != jsPsych.NO_KEYS) {
       var keyboardListener = jsPsych.pluginAPI.getKeyboardResponse({
         callback_function: after_response,
         valid_responses: trial.choices,
-        rt_method: 'performance',
+        rt_method: 'date',
         persist: false,
         allow_held_key: false
       });
@@ -150,19 +136,12 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
       }, trial.stimulus_duration);
     }
 
-    // haoxue - still not quite sure why this part doesn't work...
-    
-      jsPsych.pluginAPI.setTimeout(function(){
-        after_fixed();
-      },trial.fixed_duration)
-    
-    //
     // end trial if trial_duration is set
-    // if (trial.trial_duration !== null) {
-    //   jsPsych.pluginAPI.setTimeout(function() {
-    //     end_trial();
-    //   }, trial.trial_duration);
-    // }
+    if (trial.trial_duration !== null) {
+      jsPsych.pluginAPI.setTimeout(function() {
+        end_trial();
+      }, trial.trial_duration);
+    }
 
   };
 
