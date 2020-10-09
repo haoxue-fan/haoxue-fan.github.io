@@ -14,8 +14,6 @@
   <script src="jspsych-6.0.5/plugins/jspsych-external-html.js"></script>
   <script src="jspsych-6.0.5/plugins/jspsych-call-function.js"></script>
   <script src="jspsych-6.0.5/plugins/jspsych-survey-likert.js"></script>
-  <script src="jspsych-6.0.5/plugins/jspsych-html-slider-response.js"></script>
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css">
   </link>
@@ -32,8 +30,6 @@
 
 <body></body>
 <script>
-
-  // todo: add tick, beautify slider
 
   // quick change variables
 
@@ -54,7 +50,7 @@
   main_points = 0
 
   trialArray = []
-  n_pred_per_game = 3
+  n_pred_per_game = 2
   for (var i = 2; i <= n_trials; i++) { // can't have prediction task before the first trial
     trialArray.push(i);
   }
@@ -175,22 +171,20 @@
 
       "<p> As you can see below, the <q>slot machines</q> are labeled <q>stable</q> or <q>volatile</q>. </p>" +
       "<p><img src='img/bandit_example_slots_colored_volatile.png' style='height:100px;'></img> </p> " +
-      "<p>Both machines generate reward or loss around a mean value. </p>" +
-      "<p>For the <b>stable</b> machines this mean value doesn't change. </p> <p> For the <b>volatile</b> machines this mean value fluctuates over time. </p>" +
+      "<p>Both machines generate reward or loss around a predetermined mean value. </p>" +
+      "<p>For the <b>stable</b> machines this mean value doesn't change. </p> <p> For the <b>volatile</b> machines this mean value changes over time. </p>" +
       "<p>You will see how many coins you won or lost after each play. </p>" +
       "<p align='left'><b> Note that the color of the machine is independent of how many coins it gives. Also, you cannot predict how good a machine is based on whether it is Stable or Volatile.  A Volatile machine may deliver more coins on average than a Stable machine, or vice versa. </b></p>",
 
       "<p align='left'> You will complete <b>" + n_games + " rounds</b>, <b>each round has a different pair of slot machines.</b> </p> " +
       "<p align='left'> You may not always be choosing between a volatile and stable machine, you may be choosing between 2 volatile machines, or 2 stable machines. </p> " +
-      "<p align='left'> When you are choosing between 2 stable machines, one of them is always better than the other." +
-      "<p align='left'> When you are facing at least 1 volatile machine, the better option could change within the round because the mean value of the volatile machine fluctates." +
       "<p align='left'> The outcome of playing a certain slot machine in one round does not effect the slot machines in other rounds </p> " +
       "<p align='left'><b> Each round will consist of " + n_trials + " plays. </b> </p> ",
 
-      "<p align='left'> During the task, you will sometimes be asked to report <b>your estimate of one machine's mean value</b>. </p>" +
+      "<p align='left'> During the task, you will sometimes be asked to report <b>your estimate of the mean value</b> of one machine. </p>" +
       "<p align='left'> You will also be asked to report your confidence in your estimate. </p>" +
-      "<p align='left'> You should try to report your estimate as accurately as possible. </p>" +
-      "<p align='left'> Please note that if you make random estimates, we reserve the right to withold your bonus. </p>",
+      "<p align='left'> You should try to report your estimate as accurate as possible. </p>" +
+      "<p align='left'> Please note that if you make random answers, we reserve the right to withold your bonus. </p>",
 
       "<p align='left'> You should indicate your true preference because you will receive <b>bonus points</b> proportional to the number of coins you win in the game.</p>" +
       "<p align='left'> Please note that if you randomly <q>play</q> the machines, we reserve the right to withold your bonus. </p>",
@@ -229,7 +223,7 @@
           "Playing a stable machine always leads to winning more coins than a volatile machine.",
           "Playing a stable machine always leads to the same outcome. Playing a volatile machine leads to a different outcome each time.",
           "Playing a stable machine always lead to winning coins. Playing a volatile machine may lead to winning or losing coins.",
-          "Playing a stable machine leads to outcomes generated around an unchanged mean value. Playing a volatile machine leads to outcomes generated around a fluctuating mean value."]
+          "Playing a stable machine leads to outcomes generated around an unchanged mean value. Playing a volatile machine leads to outcomes generated around a changing mean value."]
       },
     ],
     required: true,
@@ -384,16 +378,14 @@
     return colors.slice(0, 2);
   }
 
-  // var scale_confidence = [
-  //   'Not confident at all',
-  //   '',
-  //   '',
-  //   '',
-  //   'Very confident',
-  // ];
-  // copy from Xiang
-  var scale_confidence = ["0: Guessed randomly", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10: Very confident"];
-  var scale_prediction = ['-25', '-20', '-15', '-10', '-5', '0', '5', '10', '15', '20', '25'];
+  // need change
+  var scale_confidence = [
+    'Not confident at all',
+    '',
+    '',
+    '',
+    'Very confident',
+  ];
   // practice trial run
 
 
@@ -424,38 +416,41 @@
   insert_pred = jsPsych.randomization.sampleWithoutReplacement(trialArray, n_pred_per_game);
 
   for (var j = 0; j < n_trials; j++) {
+    predict_pic = Math.floor(Math.random() * 2);
+    if (predict_pic == 0) {
+      predict_color = colors_oi[0];
+      predict_machine_type = machine1[2];
+      predict_machine = 'machine1';
+    }
+    else {
+      predict_color = colors_oi[1];
+      predict_machine_type = machine2[2];
+      predict_machine = 'machine2';
+    }
 
+    // to fix: Form submission canceled because the form is not connected
     var prediction = {
-      type: 'html-slider-response',
-      stimulus: function () {
-        predict_pic = Math.floor(Math.random() * 2);
-        if (predict_pic == 0) {
-          var predict_color = jsPsych.data.get().last(2).values()[0].machine1_color
-          var predict_machine_type = jsPsych.data.get().last(2).values()[0].machine1_type
-          return 'How many points do you think this machine will generate in this trial?<p></p>' +
-            '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + predict_color + '; cursor: default" disabled/>' + predict_machine_type + '</button></div>' +
-            '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + 'Transparent' + '; cursor: default; border: none" disabled/>' + '' + '</button></div>'
+      type: 'survey-number',
+      preamble: '<h4> Prediction task',
+      questions: [
+        {
+          prompt: 'How many points do you think this machine will generate in this trial? (please respond an integer)<p><button class="jspsych-btn-machine", style = "background-color:' + predict_color + '; cursor:default" disabled/>' + predict_machine_type + '</button></p>',
+          name: 'mean prediction',
+          required: true,
         }
-        else {
-          var predict_color = jsPsych.data.get().last(2).values()[0].machine2_color
-          var predict_machine_type = jsPsych.data.get().last(2).values()[0].machine2_type
-          return 'How many points do you think this machine will generate in this trial?<p></p>' +
-            '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + 'Transparent' + '; cursor: default; border: none" disabled/>' + '' + '</button></div>' +
-            '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + predict_color + '; cursor: default" disabled/>' + predict_machine_type + '</button></div>'
-        }
-      },
-      labels: scale_prediction,
-      data: { block: "block_" + i },
+      ],
+      data: { block: "block_" + i, chosen_machine: predict_machine },
       on_finish: function (data) {
-        data.chosen_machine = predict_pic;
-        data.pred_num = data.response;
-        console.log('chosen machine ', data.chosen_machine);
-        console.log('predict_machine', data.pred_num)
+        var dat2 = jsPsych.data.getLastTrialData().values()[0];
+        var answer2 = JSON.parse(dat2.responses).Q0;
+        data.pred_num = answer2;
+        console.log('predict_machine', data.chosen_machine)
         data.exp_stage = 'practice_pred'
         trial_index = jsPsych.data.get().last(1).values()[0].trial_index
         data.primary_key = subjectId + '_' + weekId + '_' + expId + '_' + trial_index
         data.exp_part = 'practice'
         data.cond = jsPsych.data.get().last(2).values()[0].cond
+        console.log('current cond ', data.cond)
       }
     }
 
@@ -464,9 +459,8 @@
       questions: [
         { prompt: 'How confident are you in your estimation?', labels: scale_confidence, required: true, name: 'pred_conf' },
       ],
-      data: { block: "block_" + i },
+      data: { block: "block_" + i, chosen_machine: predict_machine },
       on_finish: function (data) {
-        data.chosen_machine = predict_pic;
         data.exp_stage = 'practice_conf'
         trial_index = jsPsych.data.get().last(1).values()[0].trial_index
         data.primary_key = subjectId + '_' + weekId + '_' + expId + '_' + trial_index
@@ -475,7 +469,6 @@
         var dat2 = jsPsych.data.getLastTrialData().values()[0];
         var answer2 = JSON.parse(dat2.responses).Q0;
         data.conf_rating = answer2;
-        console.log('chosen_machine ', data.chosen_machine);
         console.log('confidence rating ', data.conf_rating);
         data.cond = jsPsych.data.get().last(2).values()[0].cond
       }
@@ -489,11 +482,9 @@
       choices: [machine1[2], machine2[2]],
       prompt: '',
       data: {
-        machine1_color: colors_oi[0],
         machine1_type: machine1[2],
         mean1: machine1[0],
         reward1: nrand(machine1[0], machine1[1]),
-        machine2_color: colors_oi[1],
         machine2_type: machine2[2],
         reward2: nrand(machine2[0], machine2[1]),
         mean2: machine2[0],
@@ -875,40 +866,41 @@
     insert_pred = jsPsych.randomization.sampleWithoutReplacement(trialArray, n_pred_per_game);
 
     for (var j = 0; j < n_trials; j++) {
+      predict_pic = Math.floor(Math.random() * 2);
+      if (predict_pic == 0) {
+        predict_color = colors_oi[0];
+        predict_machine_type = machine1[2];
+        predict_machine = 'machine1';
+      }
+      else {
+        predict_color = colors_oi[1];
+        predict_machine_type = machine2[2];
+        predict_machine = 'machine2';
+      }
 
+      // to fix: Form submission canceled because the form is not connected
       var prediction = {
-        type: 'html-slider-response',
-        stimulus: function () {
-          predict_pic = Math.floor(Math.random() * 2);
-          // to fix: the name put here?
-          // get machine type from the last trial
-          if (predict_pic == 0) {
-            var predict_color = jsPsych.data.get().last(2).values()[0].machine1_color
-            var predict_machine_type = jsPsych.data.get().last(2).values()[0].machine1_type
-            return 'How many points do you think this machine will generate in this trial?<p></p>' +
-              '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + predict_color + '; cursor: default" disabled/>' + predict_machine_type + '</button></div>' +
-              '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + 'Transparent' + '; cursor: default; border: none" disabled/>' + '' + '</button></div>'
+        type: 'survey-number',
+        preamble: '<h4> Prediction task',
+        questions: [
+          {
+            prompt: 'How many points do you think this machine will generate in this trial? (please respond an integer)<p><button class="jspsych-btn-machine", style = "background-color:' + predict_color + '; cursor:default" disabled/>' + predict_machine_type + '</button></p>',
+            name: 'mean prediction',
+            required: true,
           }
-          else {
-            var predict_color = jsPsych.data.get().last(2).values()[0].machine2_color
-            var predict_machine_type = jsPsych.data.get().last(2).values()[0].machine2_type
-            return 'How many points do you think this machine will generate in this trial?<p></p>' +
-              '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + 'Transparent' + '; cursor: default; border: none" disabled/>' + '' + '</button></div>' +
-              '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + predict_color + '; cursor: default" disabled/>' + predict_machine_type + '</button></div>'
-          }
-        },
-        labels: scale_prediction,
-        data: { block: "block_" + i },
+        ],
+        data: { block: "block_" + i, chosen_machine: predict_machine },
         on_finish: function (data) {
-          data.chosen_machine = predict_pic;
-          data.pred_num = data.response;
-          console.log('chosen machine ', data.chosen_machine);
-          console.log('predict_machine', data.pred_num)
+          var dat2 = jsPsych.data.getLastTrialData().values()[0];
+          var answer2 = JSON.parse(dat2.responses).Q0;
+          data.pred_num = answer2;
+          console.log('predict_machine', data.chosen_machine)
           data.exp_stage = 'main_pred'
           trial_index = jsPsych.data.get().last(1).values()[0].trial_index
           data.primary_key = subjectId + '_' + weekId + '_' + expId + '_' + trial_index
           data.exp_part = 'main'
           data.cond = jsPsych.data.get().last(2).values()[0].cond
+          console.log('current cond ', data.cond)
         }
       }
 
@@ -917,9 +909,8 @@
         questions: [
           { prompt: 'How confident are you in your estimation?', labels: scale_confidence, required: true, name: 'pred_conf' },
         ],
-        data: { block: "block_" + i },
+        data: { block: "block_" + i, chosen_machine: predict_machine },
         on_finish: function (data) {
-          data.chosen_machine = predict_pic
           data.exp_stage = 'main_conf'
           trial_index = jsPsych.data.get().last(1).values()[0].trial_index
           data.primary_key = subjectId + '_' + weekId + '_' + expId + '_' + trial_index
@@ -941,15 +932,13 @@
         choices: [machine1[2], machine2[2]],
         prompt: "",
         data: {
-          machine1_color: colors_oi[0],
           machine1_type: machine1[2],
           mean1: machine1[0],
           reward1: nrand(machine1[0], machine1[1]),
-          machine2_color: colors_oi[1],
           machine2_type: machine2[2],
-          reward2: nrand(machine2[0], machine2[1]),
           mean2: machine2[0],
-          block: 'block_p',
+          reward2: nrand(machine2[0], machine2[1]),
+          block: "block_" + i,
           new_mu1: nrand(machine1[0], machine1[3]),
           new_mu2: nrand(machine2[0], machine2[3])
         },
