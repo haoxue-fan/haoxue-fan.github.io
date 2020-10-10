@@ -21,6 +21,8 @@
   </link>
   <link href="jspsych-6.0.5/css/bandit.css" rel="stylesheet" type="text/css">
   </link>
+  <!-- <link href="jspsych-6.0.5/css/change-detection.css" rel="stylesheet" type="text/css">
+  </link> -->
   <link rel="stylesheet" href="jspsych-6.0.5/css/jspsych.css">
   </link>
   <link rel='stylesheet' type='text/css' href='jspsych-6.0.5/css/jspsych.css'>
@@ -159,33 +161,33 @@
   var instructions = {
     type: 'instructions',
     pages: [
-      "<p align='left'> Welcome to the <b>Slot Machines Game</b>!</p>" +
+      "<p align='left'> Welcome to the <b>Slot Machines</b>!</p>" +
       "<p align='left'>This task will take approximately 10 minutes to complete. </p>" +
       "<p align='left'> Click the <q>Next</q> button to continue.</p>",
 
       "<p align='left'> During this task, you will choose between two <q>slot machines</q>.</p>" +
       "<p align='left'> Playing the same slot machine will not always give you the same number of coins. </p>" +
-      "<p align='left'> You will start out with <b>" + starting_coins + "</b> coins. Your goal is to win as many coins as possible overall. </p>",
+      "<p align='left'> You will start out with <b>" + starting_coins + "</b> coins. Your goal is to win the most total coins. </p>",
 
       "<p align='left'> In this game slot machines are represented as colored buttons. </p>" +
-      "<p align='left'> You play a machine  <i>by clicking on it with your mouse or trackpad. </i></p> " +
+      "<p align='left'> You play a machine  <i>by clicking with your mouse or trackpad on its button. </i></p> " +
       "<p> After each play, you will see if you won coins, lost coins, or if nothing happened. </p>",
 
       "<p> As you can see below, the <q>slot machines</q> are labeled <q>stable</q> or <q>volatile</q>. </p>" +
       "<p><img src='img/bandit_example_slots_colored_volatile.png' style='height:100px;'></img> </p> " +
-      "<p>Both machines generate rewards or losses around an average amound. </p>" +
-      "<p>For the <b>stable</b> machines this average amount doesn't change. </p> <p> For the <b>volatile</b> machines this average amount fluctuates over time. </p>" +
+      "<p>Both machines generate reward or loss around a mean value. </p>" +
+      "<p>For the <b>stable</b> machines this mean value doesn't change. </p> <p> For the <b>volatile</b> machines this mean value fluctuates over time. </p>" +
       "<p>You will see how many coins you won or lost after each play. </p>" +
       "<p align='left'><b> Note that the color of the machine is independent of how many coins it gives. Also, you cannot predict how good a machine is based on whether it is Stable or Volatile.  A Volatile machine may deliver more coins on average than a Stable machine, or vice versa. </b></p>",
 
       "<p align='left'> You will complete <b>" + n_games + " rounds</b>, <b>each round has a different pair of slot machines.</b> </p> " +
       "<p align='left'> You may not always be choosing between a volatile and stable machine, you may be choosing between 2 volatile machines, or 2 stable machines. </p> " +
       "<p align='left'> When you are choosing between 2 stable machines, one of them is always better than the other." +
-      "<p align='left'> When you are choosing between a volatile and a stable machine or between two volatile machines, the better option could change within the round because the average amount of coins produced by the volatile machine fluctates." +
+      "<p align='left'> When you are facing at least 1 volatile machine, the better option could change within the round because the mean value of the volatile machine fluctates." +
       "<p align='left'> The outcome of playing a certain slot machine in one round does not effect the slot machines in other rounds </p> " +
       "<p align='left'><b> Each round will consist of " + n_trials + " plays. </b> </p> ",
 
-      "<p align='left'> During the task, you will sometimes be asked to report <b>how many coins you think one machine generates</b>. </p>" +
+      "<p align='left'> During the task, you will sometimes be asked to report <b>your estimate of one machine's mean value</b>. </p>" +
       "<p align='left'> You will also be asked to report your confidence in your estimate. </p>" +
       "<p align='left'> You should try to report your estimate as accurately as possible. </p>" +
       "<p align='left'> Please note that if you make random estimates, we reserve the right to withold your bonus. </p>",
@@ -227,7 +229,7 @@
           "Playing a stable machine always leads to winning more coins than a volatile machine.",
           "Playing a stable machine always leads to the same outcome. Playing a volatile machine leads to a different outcome each time.",
           "Playing a stable machine always lead to winning coins. Playing a volatile machine may lead to winning or losing coins.",
-          "Playing a stable machine leads to outcomes generated around an unchanged average amount. Playing a volatile machine leads to outcomes generated around a fluctuating average amount."]
+          "Playing a stable machine leads to outcomes generated around an unchanged mean value. Playing a volatile machine leads to outcomes generated around a fluctuating mean value."]
       },
     ],
     required: true,
@@ -430,14 +432,14 @@
         if (predict_pic == 0) {
           var predict_color = jsPsych.data.get().last(2).values()[0].machine1_color
           var predict_machine_type = jsPsych.data.get().last(2).values()[0].machine1_type
-          return 'How many points do you think this machine will generate in the next trial?<p></p>' +
+          return 'How many points do you think this machine will generate in this trial?<p></p>' +
             '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + predict_color + '; cursor: default" disabled/>' + predict_machine_type + '</button></div>' +
             '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + 'Transparent' + '; cursor: default; border: none" disabled/>' + '' + '</button></div>'
         }
         else {
           var predict_color = jsPsych.data.get().last(2).values()[0].machine2_color
           var predict_machine_type = jsPsych.data.get().last(2).values()[0].machine2_type
-          return 'How many points do you think this machine will generate in the next trial?<p></p>' +
+          return 'How many points do you think this machine will generate in this trial?<p></p>' +
             '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + 'Transparent' + '; cursor: default; border: none" disabled/>' + '' + '</button></div>' +
             '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + predict_color + '; cursor: default" disabled/>' + predict_machine_type + '</button></div>'
         }
@@ -883,14 +885,14 @@
           if (predict_pic == 0) {
             var predict_color = jsPsych.data.get().last(2).values()[0].machine1_color
             var predict_machine_type = jsPsych.data.get().last(2).values()[0].machine1_type
-            return 'How many points do you think this machine will generate in the next trial?<p></p>' +
+            return 'How many points do you think this machine will generate in this trial?<p></p>' +
               '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + predict_color + '; cursor: default" disabled/>' + predict_machine_type + '</button></div>' +
               '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + 'Transparent' + '; cursor: default; border: none" disabled/>' + '' + '</button></div>'
           }
           else {
             var predict_color = jsPsych.data.get().last(2).values()[0].machine2_color
             var predict_machine_type = jsPsych.data.get().last(2).values()[0].machine2_type
-            return 'How many points do you think this machine will generate in the next trial?<p></p>' +
+            return 'How many points do you think this machine will generate in this trial?<p></p>' +
               '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + 'Transparent' + '; cursor: default; border: none" disabled/>' + '' + '</button></div>' +
               '<div class="jspsych-html-button-response-button" style="display: inline-block; margin:0px 8px"><button class="jspsych-btn-machine", style="background-color: ' + predict_color + '; cursor: default" disabled/>' + predict_machine_type + '</button></div>'
           }
