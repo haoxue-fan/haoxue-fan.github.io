@@ -287,7 +287,7 @@
       var dat1 = jsPsych.data.getLastTrialData().values()[1];
       var answer1 = JSON.parse(dat.responses).Q0;
       var answer2 = JSON.parse(dat.responses).Q1;
-      if (answer1.includes('click') == true && answer2.includes('average') == true) {
+      if (answer1.includes('click') == true && answer2.includes('fluctuating') == true) {
         return false;
       } else {
         return true;
@@ -303,7 +303,7 @@
       var dat1 = jsPsych.data.getLastTrialData().values()[1];
       var answer1 = JSON.parse(dat.responses).Q0;
       var answer2 = JSON.parse(dat.responses).Q1;
-      if (answer1.includes('click') == true && answer2.includes('mean') == true) {
+      if (answer1.includes('click') == true && answer2.includes('fluctuating') == true) {
         return false;
       } else {
         return true;
@@ -319,7 +319,7 @@
       var dat1 = jsPsych.data.getLastTrialData().values()[1];
       var answer1 = JSON.parse(dat.responses).Q0;
       var answer2 = JSON.parse(dat.responses).Q1;
-      if (answer1.includes('click') == true && answer2.includes('mean') == true) {
+      if (answer1.includes('click') == true && answer2.includes('fluctuating') == true) {
         return false;
       } else {
         return true;
